@@ -1,65 +1,69 @@
+<!-- 全体の構造を示す部分 CMS等との通信は全てここで行う -->
 <template>
   <section class="container">
-    <div>
-      <app-logo/>
-      <h1 class="title">
-        wararyo-works
-      </h1>
-      <h2 class="subtitle">
-        wararyo's portfolio Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
-    </div>
+    <hero/>
+    <navigation/>
+    <category-description/>
+    <contents :posts="posts"/>
+    <footer>
+      <p>&copy; wararyo</p>
+    </footer>
   </section>
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
+import Hero from '~/layouts/Hero.vue'
+import Navigation from '~/layouts/Navigation.vue'
+import CategoryDescription from '~/layouts/CategoryDescription.vue'
+import Contents from '~/layouts/Contents.vue'
+
+var contentful = require('contentful')
 
 export default {
   components: {
-    AppLogo
-  }
+    Hero,
+    Navigation,
+    CategoryDescription,
+    Contents
+  },
+
+  data: function() {
+    return {
+
+    };
+  },
+
+  asyncData () {
+    return client.getEntries({'content_type':'work'})
+    .then((entries => {
+      return {
+        posts: entries.items
+      };
+    })).catch(console.error);
+  },
+
+  /*asyncData () {
+    return client.getEntries({'content_type':'category'})
+    .then((entries => {
+      return {
+        categories: entries.items
+      };
+    })).catch(console.error);
+  }*/
+
 }
+
+//Initialize Contentful
+var client = contentful.createClient({
+  space: 'vlu6hvdg3cmf',
+  accessToken: '69559523b19be9eec1faf2fd6ae3314d24f6ed07b74f0fd96de92b5d208611bf'
+});
+
 </script>
 
 <style>
 .container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   text-align: center;
-}
-
-.title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
 }
 </style>
 

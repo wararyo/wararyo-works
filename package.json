@@ -5,14 +5,15 @@
   "author": "wararyo <wararyo@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
+    "dev": "nuxt --spa",
+    "build": "nuxt build --spa",
+    "start": "nuxt start --spa",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "contentful": "^7.1.0",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
@@ -20,6 +21,8 @@
     "eslint": "^4.19.1",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^2.1.1",
-    "eslint-plugin-vue": "^4.0.0"
+    "eslint-plugin-vue": "^4.0.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0"
   }
 }
