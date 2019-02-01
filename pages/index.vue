@@ -60,6 +60,7 @@ export default {
 
   watch: {
     categoryObject (val) {
+      this.posts = [];
       client.getEntries({
         'content_type':'work',
         'fields.categories.sys.id[in]': val.sys.id
@@ -88,17 +89,6 @@ export default {
     },
 
   }
-
-  /*asyncData () {
-    return client.getEntries({
-      'content_type':'work',
-      'fields.categories.sys.id[in]':'4edF79nhl1tkYcZJJ0s4KF'
-    }).then((entries => {
-      return {
-        posts: entries.items
-      };
-    })).catch(console.error);
-  },*/
 
 }
 
