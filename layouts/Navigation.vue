@@ -4,6 +4,7 @@
 		<li v-for="category in categories" :key="category.fields.slug">
 			<nuxt-link :to="makeLink(category.fields.slug)">{{category.fields.name}}</nuxt-link>
 		</li>
+		<canvas id="navigation-canvas"></canvas>
 	</ul>
 </template>
 

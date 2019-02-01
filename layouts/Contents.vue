@@ -29,7 +29,6 @@ export default {
 		// カードが時間差で出る
 	    beforeEnter(el) {
 			el.style.transitionDelay = 50 * parseInt(el.dataset.index, 10) + 'ms'
-			console.log(el.dataset.index);
 	    },
 	    afterEnter(el) {
 	    	el.style.transitionDelay = ''

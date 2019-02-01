@@ -1,6 +1,6 @@
 <template>
 	<ul class="category-view" v-if="categories !== void 0">
-		<li v-for="c in categories" :key="c">{{c.fields.name}}</li>
+		<li v-for="c in categories" :key="c.fields.slug">{{c.fields.name}}</li>
 	</ul>
 </template>
 
