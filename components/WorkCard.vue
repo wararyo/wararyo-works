@@ -1,16 +1,24 @@
 <template>
-	<div class="work-card">
+	<nuxt-link :to="makeLink($route.params.category,post.fields.slug)" class="work-card">
 		<img :src="post.fields.eyecatch.fields.file.url" alt="">
 		<h3>{{post.fields.title}}</h3>
 		<div class="work-card-detail">
 
 		</div>
-	</div>
+	</nuxt-link>
 </template>
 
 <script>
 	export default {
-		props:['post']
+		props:['post'],
+
+		methods: {
+			makeLink: function(category,work) {
+				if(category === void 0)
+					category = process.env.defaultCategorySlug;
+				return '/'+category+'/'+work;
+			}
+		}
 	}
 </script>
 

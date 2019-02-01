@@ -3,9 +3,7 @@
   <section class="container">
     <hero/>
     <navigation :categories="categories" />
-    <p>category = {{$route.params.category}}</p>
-    <p>work = {{$route.params.work}}</p>
-    <category-description />
+    <!-- <category-description /> -->
     <!-- <nuxt-child /> -->
     <contents :posts="posts" />
     <footer>
@@ -40,17 +38,6 @@ export default {
     })).catch(console.error);
   },
 
-  /*validate({ params }) {
-    //WorkとCategoryはなくても可
-    if(params.work == null) return true;
-    if(params.category == null) return true;
-    for(let c in this.categories) {
-      if(c.fields.slug == this.category)
-        return true;
-    }
-    return false;
-  },*/
-
   data: function() {
     return {
       categories: {},
@@ -59,27 +46,32 @@ export default {
   },
 
   watch: {
-    categoryObject (val) {
-      this.posts = [];
-      client.getEntries({
-        'content_type':'work',
-        'fields.categories.sys.id[in]': val.sys.id
-      }).then((entries => {
-        this.posts = entries.items;
-      })).catch(console.error);
+    categoryObject: {
+      handler: function (val,old) {
+        if(old !== void 0) if(old.sys.id == val.sys.id) return;
+        this.posts = [];
+        client.getEntries({
+          'content_type':'work',
+          'fields.categories.sys.id[in]': val.sys.id
+        }).then((entries => {
+          this.posts = entries.items;
+        })).catch(console.error);
+      },
+      immediate: true
     }
   },
 
   computed: {
     category () {
-      if(this.$route.params.category == null) return "pick-up";
+      if(this.$route.params.category == null)
+        return process.env.defaultCategorySlug;
       return this.$route.params.category;
     },
     work () {
       if(this.$route.params.work == null) return "";
       return this.$route.params.work;
     },
-    categoryObject (val) {
+    categoryObject () {
       let categoryID = "";
       let category = this.category;
       let c = this.categories.filter(function (item) {
@@ -94,8 +86,8 @@ export default {
 
 //Initialize Contentful
 var client = contentful.createClient({
-  space: 'vlu6hvdg3cmf',
-  accessToken: '69559523b19be9eec1faf2fd6ae3314d24f6ed07b74f0fd96de92b5d208611bf'
+  space: process.env.contentful.space,
+  accessToken: process.env.contentful.accessToken
 });
 
 </script>

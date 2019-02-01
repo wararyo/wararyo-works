@@ -13,6 +13,13 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  env: {
+    contentful: {
+      space: 'vlu6hvdg3cmf',
+      accessToken: '69559523b19be9eec1faf2fd6ae3314d24f6ed07b74f0fd96de92b5d208611bf'
+    },
+    defaultCategorySlug: 'pick-up'
+  },
   /*
   ** Customize the progress bar color
   */
