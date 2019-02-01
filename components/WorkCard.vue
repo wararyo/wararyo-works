@@ -32,12 +32,13 @@ export default {
 <style lang="scss">
 .work-card {
 	display: block;
-	color: #333;
 	text-decoration: none;
 	width: 100%;
 	border-radius: 4px;
 	box-shadow: 0 3px 6px rgba(0,0,0,.2);
 	transition: all .1s ease-out;
+	color: #333;
+	background-color: #FFF;
 	&:hover {
 		transform: translateY(-1px);
 		box-shadow: 0 5px 10px rgba(0,0,0,.16);

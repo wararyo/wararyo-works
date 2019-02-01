@@ -1,15 +1,15 @@
 // forked from akm2's "Particle Triangulation" http://jsdo.it/akm2/cu5u
 // Configs
 var PARTICLE_NUM = 25; // 開始時分割点数
-var PARTICLE_MAX_NUM = 50; // 最大分割点数
-var PARTICLE_DEF_SPEED_MAX = 1; // 分割点の最大初速
-var PARTICLE_DEF_SPEED_MIN = 0.5; // 分割点の最小初速
+var PARTICLE_MAX_NUM = 25; // 最大分割点数
+var PARTICLE_DEF_SPEED_MAX = 0.2; // 分割点の最大初速
+var PARTICLE_DEF_SPEED_MIN = 0.1; // 分割点の最小初速
 var BACKGROUND_COLOR = '#eff1ea'; // 背景色
-var LINE_COLOR = '#303030'; // 線の色
+var LINE_COLOR = '#FFFFFF'; // 線の色
 var FILL_COLORS = [ // 塗りに使用する色, 三角形の生成順に選択される
-    '#00cbd6', '#83d302', '#e80051', '#2087db', '#f4d002',
-    '#eda3d4', '#2e8720', '#ea2ebb', '#213877', '#fc771e',
-    '#a6dbd9', '#c8e067', '#ed5131', '#e2d9d9', '#f4eea8'
+    '#55c600', '#71c600', '#71f600', '#aac600', '#c6c600',
+    '#aae200', '#aad400', '#aac600', '#c6c600', '#ffc600',
+    '#fa0', '#ff9c00', '#e28d00', '#e2aa00', '#ff7100'
 ];
 var RIPPLE_RADIUS = 15; // 分割点追加時のエフェクトの半径
 
@@ -25,8 +25,8 @@ var PATTERNS_URL = [ // パターンの画像 URL, 三角形の生成順に選�
 
 // Vars
 var canvas, context;
-var screenWidth, screenHeight;
 var delaunay;
+var triangles;
 var particles = [];
 var colorIndex = 0;
 var colorTable = {};
@@ -34,7 +34,7 @@ var patterns = [];
 var patternIndex = 0;
 var patternTable = {};
 var backgroundPattern;
-var ripples = [];
+var frame = 0;
 
 /**
  * requestAnimationFrame
@@ -54,44 +54,37 @@ var requestAnimationFrame = (function(){
  * Init
  */
 function init() {
-    document.body.style.backgroundColor = BACKGROUND_COLOR;
     
     canvas = document.getElementById('navigation-canvas');
-    console.log('hoge');
+
+    canvas.height = 200;
+    canvas.width = window.innerWidth;
+
+    context = canvas.getContext('2d');
+    context.lineWidth = 1;
+    context.strokeStyle = LINE_COLOR;
+    context.lineCap = context.lineJoin = 'round';
+
+    console.log(canvas.width);
+    console.log(canvas.height);
     
-    //window.addEventListener('resize', resize, false);
-    //resize(null);
-    
-    delaunay = new Delaunay(screenWidth, screenHeight);
-    
-    var i;
-    
-    for (i = 0; i < PARTICLE_NUM; i++) {
-        addParticle(Math.random() * (screenWidth - 150) + 75, Math.random() * (screenHeight - 150) + 75);
+    for (var i = 0; i < PARTICLE_NUM; i++) {
+        addParticle(Math.random() * (canvas.width + 40) - 20, Math.random() * (canvas.height - 80) + 40);
     }
+
+    delaunay = new Delaunay(canvas.width, canvas.height);
+
+    triangles = delaunay.multipleInsert(particles).getTriangles();
     
-    var len, img;
-    var count = PATTERNS_URL.length;
-    
-    // パターン画像をロード
-    for (i = 0, len = PATTERNS_URL.length; i < len; i++) {
-        img = new Image();
-        img.addEventListener('load', function(e) {
-            patterns.push(context.createPattern(e.target, 'repeat'));
-            
-            // ロードが完了したら, アニメーションを開始
-            if (--count === 0) {
-                // 背景用パターンを選択
-                backgroundPattern = patterns[Math.floor(patterns.length * Math.random())];
-                // パターンにパターン無しを追加
-                patterns.push('rgba(0, 0, 0, 0)');
-                
-                document.addEventListener('click', click, false);
-                requestAnimationFrame(loop);
-            }
-        });
-        img.src = PATTERNS_URL[i];
+    if (delaunay) {
+        delaunay.width = canvas.width;
+        delaunay.height = canvas.height;
     }
+
+    patterns.push('rgba(0, 0, 0, 0)');
+    backgroundPattern = patterns[Math.floor(patterns.length * Math.random())];
+    //document.addEventListener('click', click, false);
+    requestAnimationFrame(loop);
 }
 
 /**
@@ -100,22 +93,6 @@ function init() {
 function resize(e) {
     screenWidth = canvas.width = window.innerWidth;
     screenHeight = canvas.height = window.innerHeight;
-    context = canvas.getContext('2d');
-    context.lineWidth = 3;
-    context.strokeStyle = LINE_COLOR;
-    context.lineCap = context.lineJoin = 'round';
-    
-    if (delaunay) {
-        delaunay.width = screenWidth;
-        delaunay.height = screenHeight;
-    }
-}
-
-/**
- * Mouse click event handler
- */
-function click(e) {
-    addParticle(e.clientX, e.clientY, true);
 }
 
 /**
@@ -123,17 +100,17 @@ function click(e) {
  */
 function loop() {
     var TWO_PI = Math.PI * 2;
-    var w = screenWidth;
-    var h = screenHeight;
+    var w = canvas.width;
+    var h = canvas.height;
     var ctx = context;
+
+    frame++;
     
-    ctx.save();
+    /*ctx.save();
     ctx.fillStyle = BACKGROUND_COLOR;
-    ctx.fillRect(0, 0, screenWidth, screenHeight);
-    ctx.globalAlpha = 0.15;
-    ctx.fillStyle = backgroundPattern;
-    ctx.fillRect(0, 0, screenWidth, screenHeight);
-    ctx.restore();
+    ctx.fillRect(0, 0, w, h);
+    ctx.restore();*/
+    ctx.clearRect(0,0,w,h);
     
     // 三角形をクリア
     delaunay.clear();
@@ -145,30 +122,11 @@ function loop() {
     for (len = particles.length, i = 0; i < len; i++) {
         p = particles[i];
         
-        p.x += p.vx;
-        p.y += p.vy;
-        
-        // 反射
-        if (p.x < 0) {
-            p.x = 0;
-            if (p.vx < 0) p.vx *= -1;
-        }
-        if (p.x > w) {
-            p.x = w;
-            if (p.vx > 0) p.vx *= -1;
-        }
-        if (p.y < 0) {
-            p.y = 0;
-            if (p.vy < 0) p.vy *= -1;
-        }
-        if (p.y > h) {
-            p.y = h;
-            if (p.vy > 0) p.vy *= -1;
-        }
+        p.y += Math.sin(frame*0.001*TWO_PI+p.x*0.01) * 0.1
     }
     
     // 三角形分割して三角形を取得
-    var triangles = delaunay.multipleInsert(particles).getTriangles();
+    //triangles = delaunay.multipleInsert(particles).getTriangles();
     
     var t, id, p0, p1, p2;
     var ct = colorTable;
@@ -215,45 +173,13 @@ function loop() {
         ctx.stroke();
         ctx.restore();
     }
-    
-    // 波紋があれば描画
-    var r;
-    for (len = ripples.length, i = 0; i < len; i++) {
-        r = ripples[i];
-        
-        if (r.death) {
-            ripples.shift(i, 1);
-            len--;
-            i--;
-        }
-        
-        r.update();
-        
-        p = r.particle;
-        
+    for(len = particles.length, i = 0; i < len; i++) {
+        p = particles[i];
         ctx.beginPath();
-        ctx.moveTo(p.x + r.radius, p.y);
-        ctx.arc(p.x, p.y, r.radius, 0, TWO_PI, false);
+        ctx.moveTo(p.x + 3, p.y);
+        ctx.arc(p.x, p.y, 3, 0, TWO_PI, false);
         ctx.fillStyle = LINE_COLOR;
         ctx.fill();
-    }
-    
-    // デバッグ用, true で外接円を描画する
-    if (false) {
-        var r;
-        ctx.beginPath();
-        for (i = 0; i < len; i++) {
-            t = triangles[i];
-            if (t.id === null) continue;
-            r = Math.sqrt(t._circle.radiusSq);
-            ctx.moveTo(t._circle.x + r, t._circle.y);
-            ctx.arc(t._circle.x, t._circle.y, r, 0, Math.PI * 2, false);
-        }
-        ctx.save();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = 'red';
-        ctx.stroke();
-        ctx.restore();
     }
     
     requestAnimationFrame(loop);
@@ -281,35 +207,6 @@ function addParticle(x, y, rippleOut) {
 //-----------------------------
 // CLASS
 //-----------------------------
-
-/**
- * Ripple
- */
-function Ripple(p) {
-    this.particle = p;
-}
-
-Ripple.prototype = {
-    _TARGET_RADIUS: RIPPLE_RADIUS,
-    _PI: Math.PI,
-    
-    radius: 0,
-    death: false,
-    _radian: 0,
-    
-    update: function() {
-        if (this.death) return;
-        
-        this._radian += 0.15;
-        if (this._radian > this._PI) {
-            this.radius = 0;
-            this.death = true;
-            return;
-        }
-        
-        this.radius = Math.sin(this._radian) * this._TARGET_RADIUS;
-    }
-}
 
 /**
  * Delaunay
@@ -561,4 +458,4 @@ var Particle = (function(Node) {
 
 
 // Init
-window.addEventListener('load', init, false);
+//window.addEventListener('load', init, false);
