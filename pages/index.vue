@@ -1,14 +1,17 @@
 <!-- 全体の構造を示す部分 CMS等との通信は全てここで行う -->
 <template>
   <section class="container">
-    <hero/>
-    <navigation :categories="categories" />
-    <!-- <category-description /> -->
-    <!-- <nuxt-child /> -->
-    <contents :posts="posts" />
-    <footer>
-      <p>&copy; wararyo</p>
-    </footer>
+    <work-modal :work="postObject"/>
+    <div class="blurable" :class="{blurred: postObject !== void 0}">
+      <hero/>
+      <navigation :categories="categories" />
+      <!-- <category-description /> -->
+      <!-- <nuxt-child /> -->
+      <contents :posts="posts" />
+      <footer>
+        <p>&copy; wararyo</p>
+      </footer>
+    </div>
   </section>
 </template>
 
@@ -17,6 +20,7 @@ import Hero from '~/layouts/Hero.vue'
 import Navigation from '~/layouts/Navigation.vue'
 import CategoryDescription from '~/layouts/CategoryDescription.vue'
 import Contents from '~/layouts/Contents.vue'
+import WorkModal from '~/components/WorkModal.vue'
 
 var contentful = require('contentful')
 
@@ -26,7 +30,8 @@ export default {
     Hero,
     Navigation,
     CategoryDescription,
-    Contents
+    Contents,
+    WorkModal
   },
 
   asyncData () {
@@ -63,23 +68,29 @@ export default {
 
   computed: {
     category () {
-      if(this.$route.params.category == null)
+      if(this.$route.params.category === void 0)
         return process.env.defaultCategorySlug;
       return this.$route.params.category;
     },
-    work () {
-      if(this.$route.params.work == null) return "";
+    post () {
+      if(this.$route.params.work === void 0) return "";
       return this.$route.params.work;
     },
     categoryObject () {
-      let categoryID = "";
       let category = this.category;
       let c = this.categories.filter(function (item) {
         return item.fields.slug == category;
       });
       return c[0];
     },
-
+    postObject () {
+      if(this.post == "") return void 0;
+      let post = this.post;
+      let p = this.posts.filter(function (item) {
+        return item.fields.slug == post;
+      });
+      return p[0];
+    }
   }
 
 }
@@ -95,6 +106,12 @@ var client = contentful.createClient({
 <style>
 .container {
   text-align: center;
+}
+.blurable {
+  transition: filter .2s ease-in-out;
+}
+.blurred {
+  filter: blur(2px);
 }
 </style>
 
