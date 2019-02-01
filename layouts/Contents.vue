@@ -1,7 +1,15 @@
 <!-- 作品たちを並べて表示する -->
 <template>
-	<transition-group v-if="posts.length > 0" tag="div" appear mode="out-in" class="contents">
-		<div class="contents-item" v-for="post in posts" :key="post.fields.slug">
+	<transition-group
+		v-if="posts.length > 0"
+		tag="div"
+		appear
+		mode="out-in"
+		class="contents"
+		@before-enter="beforeEnter"
+		@after-enter="afterEnter"
+		@enter-cancelled="afterEnter">
+		<div class="contents-item" v-for="(post,index) in posts" :key="post.fields.slug" :data-index="index">
 			<work-card :post="post"/>
 		</div>
 	</transition-group>
@@ -16,7 +24,17 @@ export default {
 	components: {
 		WorkCard
 	},
-	props: ['posts']
+	props: ['posts'],
+	methods: {
+		// カードが時間差で出る
+	    beforeEnter(el) {
+			el.style.transitionDelay = 50 * parseInt(el.dataset.index, 10) + 'ms'
+			console.log(el.dataset.index);
+	    },
+	    afterEnter(el) {
+	    	el.style.transitionDelay = ''
+	    }
+	}
 }
 </script>
 
