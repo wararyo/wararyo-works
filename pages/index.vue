@@ -7,7 +7,7 @@
     <p>work = {{$route.params.work}}</p>
     <category-description />
     <!-- <nuxt-child /> -->
-    <!-- <contents :posts="posts" /> -->
+    <contents :posts="posts" />
     <footer>
       <p>&copy; wararyo</p>
     </footer>
@@ -23,6 +23,7 @@ import Contents from '~/layouts/Contents.vue'
 var contentful = require('contentful')
 
 export default {
+
   components: {
     Hero,
     Navigation,
@@ -30,15 +31,63 @@ export default {
     Contents
   },
 
+  asyncData () {
+    return client.getEntries({'content_type':'category'})
+    .then((entries => {
+      return {
+        categories: entries.items
+      };
+    })).catch(console.error);
+  },
+
+  /*validate({ params }) {
+    //WorkとCategoryはなくても可
+    if(params.work == null) return true;
+    if(params.category == null) return true;
+    for(let c in this.categories) {
+      if(c.fields.slug == this.category)
+        return true;
+    }
+    return false;
+  },*/
+
   data: function() {
     return {
-
+      categories: {},
+      posts: [],
     };
   },
 
   watch: {
-
+    categoryObject (val) {
+      client.getEntries({
+        'content_type':'work',
+        'fields.categories.sys.id[in]': val.sys.id
+      }).then((entries => {
+        this.posts = entries.items;
+      })).catch(console.error);
+    }
   },
+
+  computed: {
+    category () {
+      if(this.$route.params.category == null) return "pick-up";
+      return this.$route.params.category;
+    },
+    work () {
+      if(this.$route.params.work == null) return "";
+      return this.$route.params.work;
+    },
+    categoryObject (val) {
+      let categoryID = "";
+      let category = this.category;
+      let c = this.categories.filter(function (item) {
+        return item.fields.slug == category;
+      });
+      return c[0];
+    },
+
+  }
 
   /*asyncData () {
     return client.getEntries({
@@ -50,15 +99,6 @@ export default {
       };
     })).catch(console.error);
   },*/
-
-  asyncData () {
-    return client.getEntries({'content_type':'category'})
-    .then((entries => {
-      return {
-        categories: entries.items
-      };
-    })).catch(console.error);
-  }
 
 }
 
