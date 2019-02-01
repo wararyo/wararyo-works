@@ -35,8 +35,10 @@ export default {
   },
 
   asyncData () {
-    return client.getEntries({'content_type':'category'})
-    .then((entries => {
+    return client.getEntries({
+      'content_type':'category',
+      'order':'fields.emphasized'
+    }).then((entries => {
       return {
         categories: entries.items
       };

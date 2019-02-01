@@ -4,16 +4,30 @@
 		<nuxt-link :to="makeLink($route.params.category)"
 			class="modal-mask" />
 		<div class="modal-content">
-			<h3>{{work.fields.title}}</h3>
+			<vue-markdown v-if="work.fields.eyecatchEmbed !== void 0" class="eyecatch-embed" :source="work.fields.eyecatchEmbed" />
+			<img v-else class="eyecatch" :src="work.fields.eyecatch.fields.file.url" :alt="work.fields.title">
+			<h1>{{work.fields.title}}</h1>
+			<time :datetime="work.fields.createdAt" class="createdAt">{{work.fields.createdAt}}</time>
+			<category-view :categories="work.fields.categories" />
+			<tag-view :tags="work.fields.tags" />
+			<vue-markdown class="work-content" :source="work.fields.content" />
 		</div>
 	</div>
 	</transition>
 </template>
 
 <script>
+import VueMarkdown from 'vue-markdown'
+import TagView from '~/components/TagView.vue'
+import CategoryView from '~/components/CategoryView.vue'
+
 export default {
 	props: ['work'],
-
+	components: {
+		VueMarkdown,
+		TagView,
+		CategoryView
+	},
 	methods: {
 		makeLink: function(category) {
 			if(category === void 0)
@@ -65,9 +79,40 @@ export default {
 	position: relative;
 	overflow-x: hidden;
 	overflow-y: scroll;
-	border-radius: 4px;
+	text-align: left;
+	border-radius: 8px;
 	background-color: #FAFAFA;
 	box-shadow: 0 4px 8px rgba(0,0,0,.2);
+
+	h1 {
+		font-size: 1.8em;
+		margin: 16px 0 0;
+	}
+
+	time {
+		display: block;
+		color: #666;
+		text-align: right;
+	}
+
+	.category-view, .tag-view {
+		display: inline-flex;
+	}
+
+	.eyecatch {
+		width: 100%;
+		border-radius: 2px;
+		box-shadow: 0 2px 4px rgba(0,0,0,.2);
+	}
+	.eyecatch-embed iframe {
+		width: 100%;
+		height: 420px;
+		background-color: rgba(0,0,0,.1);
+		box-shadow: 0 2px 4px rgba(0,0,0,.2);
+	}
+	.work-content {
+		margin-top: 16px;
+	}
 }
 .modal {
 	&-enter-active {
@@ -80,9 +125,9 @@ export default {
 		}
 	}
 	&-leave-active {
-		transition: all .0s cubic-bezier(0.04, 0.83, 0.29, 1) .8s;
+		transition: all .0s cubic-bezier(0.04, 0.83, 0.29, 1) .6s;
 		.modal-mask {
-			transition: all .8s cubic-bezier(0.5, 0.0, 0.1, 1);
+			transition: all .6s cubic-bezier(0.5, 0.0, 0.1, 1);
 		}
 		.modal-content {
 			transition: all .4s cubic-bezier(0.04, 0.83, 0.29, 1);

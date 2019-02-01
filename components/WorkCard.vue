@@ -1,25 +1,32 @@
 <template>
-	<nuxt-link :to="makeLink($route.params.category,post.fields.slug)" class="work-card">
+	<nuxt-link v-if="post !== void 0" :to="makeLink($route.params.category,post.fields.slug)" class="work-card">
 		<img :src="post.fields.eyecatch.fields.file.url" alt="">
 		<h3>{{post.fields.title}}</h3>
 		<div class="work-card-detail">
-
+			<tag-view :tags="post.fields.tags" />
+			<time :datetime="post.fields.createdAt" class="createdAt">{{post.fields.createdAt}}</time>
 		</div>
 	</nuxt-link>
+	<div v-else class="word-card">
+		
+	</div>
 </template>
 
 <script>
-	export default {
-		props:['post'],
-
-		methods: {
-			makeLink: function(category,work) {
-				if(category === void 0)
-					category = process.env.defaultCategorySlug;
-				return '/'+category+'/'+work;
-			}
+import TagView from '~/components/TagView.vue'
+export default {
+	props:['post'],
+	components: {
+		TagView,
+	},
+	methods: {
+		makeLink: function(category,work) {
+			if(category === void 0)
+				category = process.env.defaultCategorySlug;
+			return '/'+category+'/'+work;
 		}
 	}
+}
 </script>
 
 <style lang="scss">
@@ -42,8 +49,22 @@
 	h3 {
 		padding: 8px;
 	}
+
+	.tag-view {
+		flex: 1;
+		margin: 0;
+		font-size: 0.8em;
+	}
+	time {
+		color: #666;
+		text-align: right;
+	}
 }
 .work-card-detail {
-	padding: 16px;
+	padding: 4px 16px 16px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	overflow: hidden;
 }
 </style>

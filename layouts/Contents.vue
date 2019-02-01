@@ -1,10 +1,12 @@
 <!-- 作品たちを並べて表示する -->
 <template>
-	<transition-group tag="div" appear mode="out-in" class="contents">
+	<transition-group v-if="posts.length > 0" tag="div" appear mode="out-in" class="contents">
 		<div class="contents-item" v-for="post in posts" :key="post.fields.slug">
 			<work-card :post="post"/>
 		</div>
 	</transition-group>
+	<div v-else>
+	</div>
 </template>
 
 <script>
