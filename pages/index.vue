@@ -2,9 +2,12 @@
 <template>
   <section class="container">
     <hero/>
-    <navigation/>
-    <category-description/>
-    <contents :posts="posts"/>
+    <navigation :categories="categories" />
+    <p>category = {{$route.params.category}}</p>
+    <p>work = {{$route.params.work}}</p>
+    <category-description />
+    <!-- <nuxt-child /> -->
+    <!-- <contents :posts="posts" /> -->
     <footer>
       <p>&copy; wararyo</p>
     </footer>
@@ -33,23 +36,29 @@ export default {
     };
   },
 
-  asyncData () {
-    return client.getEntries({'content_type':'work'})
-    .then((entries => {
+  watch: {
+
+  },
+
+  /*asyncData () {
+    return client.getEntries({
+      'content_type':'work',
+      'fields.categories.sys.id[in]':'4edF79nhl1tkYcZJJ0s4KF'
+    }).then((entries => {
       return {
         posts: entries.items
       };
     })).catch(console.error);
-  },
+  },*/
 
-  /*asyncData () {
+  asyncData () {
     return client.getEntries({'content_type':'category'})
     .then((entries => {
       return {
         categories: entries.items
       };
     })).catch(console.error);
-  }*/
+  }
 
 }
 

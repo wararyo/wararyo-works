@@ -1,4 +1,14 @@
 <!-- 作品のカテゴリを横に並べる -->
 <template>
-	<p>navigation</p>
+	<ul>
+		<li v-for="category in categories" :key="category.fields.slug">
+			<nuxt-link :to="'/'+category.fields.slug">{{category.fields.name}}</nuxt-link>
+		</li>
+	</ul>
 </template>
+
+<script>
+export default {
+	props: ['categories']
+}
+</script>
