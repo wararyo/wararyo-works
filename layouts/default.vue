@@ -14,7 +14,8 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
-  background-color: #f5f7f0;
+  background: linear-gradient(#fffff4,#dce4cd);
+  background-attachment: fixed;
 }
 
 *, *:before, *:after {

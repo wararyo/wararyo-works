@@ -1,27 +1,16 @@
 // forked from akm2's "Particle Triangulation" http://jsdo.it/akm2/cu5u
 // Configs
-var PARTICLE_NUM = 25; // 開始時分割点数
-var PARTICLE_MAX_NUM = 25; // 最大分割点数
-var PARTICLE_DEF_SPEED_MAX = 0.2; // 分割点の最大初速
-var PARTICLE_DEF_SPEED_MIN = 0.1; // 分割点の最小初速
-var BACKGROUND_COLOR = '#eff1ea'; // 背景色
 var LINE_COLOR = '#FFFFFF'; // 線の色
 var FILL_COLORS = [ // 塗りに使用する色, 三角形の生成順に選択される
     '#55c600', '#71c600', '#71f600', '#aac600', '#c6c600',
     '#aae200', '#aad400', '#aac600', '#c6c600', '#ffc600',
     '#fa0', '#ff9c00', '#e28d00', '#e2aa00', '#ff7100'
 ];
-var RIPPLE_RADIUS = 15; // 分割点追加時のエフェクトの半径
-
-// Constants
-var PATTERNS_URL = [ // パターンの画像 URL, 三角形の生成順に選択される
-    'http://jsrun.it/assets/o/S/2/H/oS2Hk.png',
-    'http://jsrun.it/assets/a/O/9/d/aO9d8.png',
-    'http://jsrun.it/assets/y/b/y/3/yby3x.png',
-    'http://jsrun.it/assets/a/Q/Z/h/aQZhn.png',
-    'http://jsrun.it/assets/i/F/Y/g/iFYgC.png',
-    'http://jsrun.it/assets/8/i/5/b/8i5bd.png'
-];
+var PARTICLE_MAX_COLUMN = 64;
+var PARTICLE_START_X = -48;
+var PARTICLE_START_Y = 20;
+var PARTICLE_INTERVAL = 36;
+var PARTICLE_ROW = 5;
 
 // Vars
 var canvas, context;
@@ -35,6 +24,8 @@ var patternIndex = 0;
 var patternTable = {};
 var backgroundPattern;
 var frame = 0;
+
+var canvasIsPlaying = true;
 
 /**
  * requestAnimationFrame
@@ -61,15 +52,24 @@ function init() {
     canvas.width = window.innerWidth;
 
     context = canvas.getContext('2d');
-    context.lineWidth = 1;
+    context.lineWidth = 0.6;
     context.strokeStyle = LINE_COLOR;
     context.lineCap = context.lineJoin = 'round';
 
     console.log(canvas.width);
     console.log(canvas.height);
     
-    for (var i = 0; i < PARTICLE_NUM; i++) {
-        addParticle(Math.random() * (canvas.width + 40) - 20, Math.random() * (canvas.height - 80) + 40);
+    // for (var i = 0; i < PARTICLE_NUM; i++) {
+    //     addParticle(Math.random() * (canvas.width + 40) - 20, Math.random() * (canvas.height - 80) + 40);
+    // }
+
+    for(var i = 0; i < PARTICLE_ROW; i++) {
+        for(var j = 0; j < PARTICLE_MAX_COLUMN; j++){
+            let x = PARTICLE_START_X + (PARTICLE_INTERVAL * (j+(i%2==0?0:0.5))) + (Math.random() - 0.5)*16;
+            let y = PARTICLE_START_Y + (PARTICLE_INTERVAL * 0.2 * i) + (i*i*6) + (Math.random() - 0.5)*4*i;
+            addParticle(x, y, i+3);
+            if(x > canvas.width + 48) break;
+        }
     }
 
     delaunay = new Delaunay(canvas.width, canvas.height);
@@ -105,11 +105,7 @@ function loop() {
     var ctx = context;
 
     frame++;
-    
-    /*ctx.save();
-    ctx.fillStyle = BACKGROUND_COLOR;
-    ctx.fillRect(0, 0, w, h);
-    ctx.restore();*/
+
     ctx.clearRect(0,0,w,h);
     
     // 三角形をクリア
@@ -122,7 +118,9 @@ function loop() {
     for (len = particles.length, i = 0; i < len; i++) {
         p = particles[i];
         
-        p.y += Math.sin(frame*0.001*TWO_PI+p.x*0.01) * 0.1
+        p.vy = (Math.sin(frame*0.001*TWO_PI+p.x*0.01) * 4
+         + Math.sin(-frame*0.001*TWO_PI+p.x*0.02) * 2)
+          * p.z
     }
     
     // 三角形分割して三角形を取得
@@ -157,12 +155,13 @@ function loop() {
         
         ctx.save();
         ctx.beginPath();
-        ctx.moveTo(p0.x, p0.y);
-        ctx.lineTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
+        ctx.moveTo(p0.x + p0.vx, p0.y + p0.vy);
+        ctx.lineTo(p1.x + p1.vx, p1.y + p1.vy);
+        ctx.lineTo(p2.x + p2.vx, p2.y + p2.vy);
         ctx.closePath();
         // 描画色で塗る
         ctx.fillStyle = ct[id];
+        ctx.globalAlpha = p0.z*0.25 - 0.6;
         ctx.fill();
         // パターンで塗る, 三角形の位置と傾きに応じて変形
         ctx.translate(p0.x, p0.y);
@@ -176,31 +175,35 @@ function loop() {
     for(len = particles.length, i = 0; i < len; i++) {
         p = particles[i];
         ctx.beginPath();
-        ctx.moveTo(p.x + 3, p.y);
-        ctx.arc(p.x, p.y, 3, 0, TWO_PI, false);
+        ctx.moveTo(p.x + p.vx + 2, p.y + p.vy);
+        ctx.arc(p.x + p.vx, p.y + p.vy, 2, 0, TWO_PI, false);
         ctx.fillStyle = LINE_COLOR;
+        ctx.globalAlpha = p.z*0.2 - 0.5;
         ctx.fill();
     }
+
+    // Draw Fog
+    // context.beginPath();
+    // context.rect(0,0,w,h);
+    // var grdLinear = context.createLinearGradient(0, 0, 0, h);
+    // grdLinear.addColorStop(0, "rgba(247, 247, 247, 0.5)");
+    // grdLinear.addColorStop(1, 'rgba(247, 247, 247, 0)');
+    // context.fillStyle = grdLinear;
+    // context.fill();  
+    // context.closePath();
     
-    requestAnimationFrame(loop);
+    if(canvasIsPlaying) requestAnimationFrame(loop);
 }
 
 /**
  * Add particle
  */
-function addParticle(x, y, rippleOut) {
-    if (particles.length >= PARTICLE_MAX_NUM) {
-        particles.shift();
-        addParticle(x, y, rippleOut);
-        return;
-    }
+function addParticle(x, y, z) {
     var p = new Particle(x, y);
-    var l = (PARTICLE_DEF_SPEED_MAX - PARTICLE_DEF_SPEED_MIN) * Math.random() + PARTICLE_DEF_SPEED_MIN;
-    var a = Math.PI * 2 * Math.random();
-    p.vx = l * Math.cos(a);
-    p.vy = l * Math.sin(a);
+    p.vx = 0;
+    p.vy = 0;
+    p.z = z;
     particles.push(p);
-    if (rippleOut) ripples.push(new Ripple(p));
 }
 
 

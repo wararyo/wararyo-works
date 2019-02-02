@@ -109,6 +109,10 @@ var client = contentful.createClient({
 .container {
   text-align: center;
 }
+footer {
+  margin: 24px;
+}
+
 .blurable {
   transition: filter .2s ease-in-out;
 }

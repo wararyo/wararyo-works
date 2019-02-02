@@ -1,6 +1,6 @@
 <!-- 何かかっこいいことを書く -->
 <template>
-	<div>
+	<div class="hero">
       <h1 class="title">
         wararyo Works
       </h1>
@@ -11,6 +11,10 @@
 </template>
 
 <style lang="scss">
+.hero {
+  height: 560px;
+}
+
 .title {
   font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
   display: block;

@@ -1,11 +1,13 @@
 <!-- 作品のカテゴリを横に並べる -->
 <template>
-	<ul class="navigation">
-		<li v-for="category in categories" :key="category.fields.slug">
-			<nuxt-link :to="makeLink(category.fields.slug)">{{category.fields.name}}</nuxt-link>
-		</li>
+	<div class="navigation">
+		<ul>
+			<li v-for="category in categories" :key="category.fields.slug">
+				<nuxt-link :to="makeLink(category.fields.slug)">{{category.fields.name}}</nuxt-link>
+			</li>
+		</ul>
 		<canvas id="navigation-canvas"></canvas>
-	</ul>
+	</div>
 </template>
 
 <script>
@@ -30,10 +32,13 @@ export default {
 .navigation {
 	position: relative;
 	height: 200px;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
+
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+	}
 
 	a {
 		margin: 16px;

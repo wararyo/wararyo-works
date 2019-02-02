@@ -13,7 +13,8 @@
 			<work-card :post="post"/>
 		</div>
 	</transition-group>
-	<div v-else>
+	<div v-else class="contents">
+		&nbsp;
 	</div>
 </template>
 
@@ -40,6 +41,7 @@ export default {
 <style lang="scss">
 .contents {
 	max-width: 1032px;
+	min-height: calc(100vh - 240px);
 	margin: 16px auto;
 	display: flex;
 	justify-content: center;

@@ -28,6 +28,19 @@ export default {
 		TagView,
 		CategoryView
 	},
+	watch: {
+		work: function (val) {
+			if(val === void 0) {
+				if(!canvasIsPlaying) {
+					canvasIsPlaying = true;
+					requestAnimationFrame(loop);
+				}
+			}
+			else {
+				canvasIsPlaying = false;
+			}
+		}
+	},
 	methods: {
 		makeLink: function(category) {
 			if(category === void 0)
