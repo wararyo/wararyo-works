@@ -108,7 +108,7 @@ function mouesMoved(e) {
     var rect = canvas.getBoundingClientRect();
     mousePos = {
         x: e.clientX - rect.left,
-        y: e.clientY - rect.top
+        y: e.clientY - rect.top - 16
     };
 }
 
@@ -139,7 +139,7 @@ function loop() {
             let dist = Math.hypot(mousePos.x-p.x,(mousePos.y-p.y)*0.6);//判定円を縦長に
             let radius = 160.0;
             if(dist < radius) {
-                vx += (mousePos.x-p.x)*2*Math.pow((p.z-2)/6,2)*(Math.pow(1-dist/radius,2));
+                vx += (mousePos.x-p.x)*1.4*Math.pow((p.z-2)/6,2)*(Math.pow(1-dist/radius,2));
                 vy += (mousePos.y-p.y)*2*Math.pow((p.z-2)/6,2)*(Math.pow(1-dist/radius,2));
             }
         }

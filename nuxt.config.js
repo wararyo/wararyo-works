@@ -23,6 +23,10 @@ module.exports = {
     },
     defaultCategorySlug: 'pick-up'
   },
+  plugins: [
+    '~/plugins/scroll-directive',
+    '~/plugins/smooth-scroll'
+  ],
   /*
   ** Customize the progress bar color
   */

@@ -6,10 +6,11 @@
 		appear
 		mode="out-in"
 		class="contents"
+		v-scroll="onScroll"
 		@before-enter="beforeEnter"
 		@after-enter="afterEnter"
 		@enter-cancelled="afterEnter">
-		<div class="contents-item" v-for="(post,index) in posts" :key="post.fields.slug" :data-index="index">
+		<div class="contents-item" v-if="visible" v-for="(post,index) in posts" :key="post.fields.slug" :data-index="index">
 			<work-card :post="post"/>
 		</div>
 	</transition-group>
@@ -26,6 +27,11 @@ export default {
 		WorkCard
 	},
 	props: ['posts'],
+	data: function(){
+		return {
+			visible: false
+		};
+	},
 	methods: {
 		// カードが時間差で出る
 	    beforeEnter(el) {
@@ -33,6 +39,11 @@ export default {
 	    },
 	    afterEnter(el) {
 	    	el.style.transitionDelay = ''
+	    },
+	    onScroll: function(evt,el) {
+	    	if(window.scrollY > 240) {
+	    		this.visible = true;
+	    	}
 	    }
 	}
 }
@@ -55,7 +66,7 @@ export default {
 .v {
 
 	&-enter-active {
-		transition: all .5s cubic-bezier(0.04, 0.83, 0.29, 1);
+		transition: opacity .5s ease-out, transform .5s cubic-bezier(0.04, 0.83, 0.29, 1);
 	}
 
 	&-leave-active {
