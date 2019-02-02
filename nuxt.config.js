@@ -1,9 +1,12 @@
 module.exports = {
+  server: {
+    host: '192.168.20.24', // デフォルト: localhost
+  },
   /*
   ** Headers of the page
   */
   head: {
-    title: 'wararyo Works',
+    title: 'wararyo\'s work',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
