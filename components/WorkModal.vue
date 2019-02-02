@@ -45,6 +45,8 @@ export default {
 		makeLink: function(category) {
 			if(category === void 0)
 				category = '';
+			else if(category == process.env.defaultCategorySlug)
+				category = '';
 			return '/'+category;
 		}
 	}

@@ -15,7 +15,7 @@
 		</div>
 	</transition-group>
 	<div v-else class="contents">
-		&nbsp;
+		<p class="contents-loading">Loading...</p>
 	</div>
 </template>
 
@@ -44,6 +44,9 @@ export default {
 	    	if(window.scrollY > 240) {
 	    		this.visible = true;
 	    	}
+	    	else if(window.scrollY < 8) {
+	    		this.visible = false;
+	    	}
 	    }
 	}
 }
@@ -61,6 +64,15 @@ export default {
 .contents-item {
 	width: 320px;
 	margin: 12px;
+}
+.contents-loading {
+	margin: 64px 0;
+	animation: fadein 2s ease-in-out;
+}
+
+@keyframes fadein {
+	0% {opacity: 0;}
+	100% {opacity: 1;}
 }
 
 .v {
