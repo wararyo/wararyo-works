@@ -12,7 +12,7 @@
 
 <style lang="scss">
 .hero {
-  height: 560px;
+  min-height: calc(100vh - 200px);
 }
 
 .title {

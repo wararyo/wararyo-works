@@ -1,4 +1,4 @@
-// forked from akm2's "Particle Triangulation" http://jsdo.it/akm2/cu5u
+// forked from akm2's "Abstriangulation" http://jsdo.it/akm2/wTcC
 // Configs
 var LINE_COLOR = '#FFFFFF'; // 線の色
 var FILL_COLORS = [ // 塗りに使用する色, 三角形の生成順に選択される
@@ -63,18 +63,33 @@ function init() {
     //     addParticle(Math.random() * (canvas.width + 40) - 20, Math.random() * (canvas.height - 80) + 40);
     // }
 
+    triangles = [];
+
+    var particleColumn = Math.floor(Math.min((canvas.width + 96) / PARTICLE_INTERVAL,PARTICLE_MAX_COLUMN));
+
     for(var i = 0; i < PARTICLE_ROW; i++) {
-        for(var j = 0; j < PARTICLE_MAX_COLUMN; j++){
+        for(var j = 0; j < particleColumn; j++){
             let x = PARTICLE_START_X + (PARTICLE_INTERVAL * (j+(i%2==0?0:0.5))) + (Math.random() - 0.5)*16;
             let y = PARTICLE_START_Y + (PARTICLE_INTERVAL * 0.2 * i) + (i*i*6) + (Math.random() - 0.5)*4*i;
             addParticle(x, y, i+3);
-            if(x > canvas.width + 48) break;
+            if(i != 0 && j != 0) {
+                if(!(i%2==0 && j==1)) {
+                    triangles.push(new Triangle(
+                        particles[particleColumn*(i-1)+j-1],
+                        particles[particleColumn*i+j-1],
+                        particles[particleColumn*(i-1)+j])); //v形
+                }
+                triangles.push(new Triangle(
+                    particles[particleColumn*i+j-1],
+                    particles[particleColumn*(i-1)+j],
+                    particles[particleColumn*i+j])); //∧形
+            }
         }
     }
 
     delaunay = new Delaunay(canvas.width, canvas.height);
 
-    triangles = delaunay.multipleInsert(particles).getTriangles();
+    //triangles = delaunay.multipleInsert(particles).getTriangles();
     
     if (delaunay) {
         delaunay.width = canvas.width;
@@ -164,10 +179,10 @@ function loop() {
         ctx.globalAlpha = p0.z*0.25 - 0.6;
         ctx.fill();
         // パターンで塗る, 三角形の位置と傾きに応じて変形
-        ctx.translate(p0.x, p0.y);
-        ctx.rotate(Math.atan2(p0.y - p1.y, p0.x - p1.x));
-        ctx.fillStyle = pt[id];
-        ctx.fill();
+        // ctx.translate(p0.x, p0.y);
+        // ctx.rotate(Math.atan2(p0.y - p1.y, p0.x - p1.x));
+        // ctx.fillStyle = pt[id];
+        // ctx.fill();
         // 線を引く
         ctx.stroke();
         ctx.restore();
@@ -206,6 +221,48 @@ function addParticle(x, y, z) {
     particles.push(p);
 }
 
+function Triangle(p0, p1, p2) {
+    this.nodes = [p0, p1, p2];
+    this.edges = [new Edge(p0, p1), new Edge(p1, p2), new Edge(p2, p0)];
+    this._createId();
+}
+
+Triangle.prototype = {
+    id: null, // ノードの組み合わせによる識別子
+    
+    /**
+     * ノードの組み合わせによる識別子を作成する
+     * 識別子の設定されていないノードがある場合 id は null
+     */
+    _createId: function() {
+        var nodes = this.nodes;
+        var id0 = nodes[0].id;
+        var id1 = nodes[1].id;
+        var id2 = nodes[2].id;
+        if (id0 !== null && id1 !== null && id2 !== null) {
+            this.id = [id0, id1, id2].sort().join('_');
+        }
+    }
+}
+function Node(x, y, id) {
+    this.x = x;
+    this.y = y;
+    this.id = !isNaN(id) && isFinite(id) ? id : null;
+}
+Node.prototype = {
+    eq: function(p) {
+        var dx = this.x - p.x;
+        var dy = this.y - p.y;
+        return (dx < 0 ? -dx : dx) < 0.0001 && (dy < 0 ? -dy : dy) < 0.0001;
+    },
+    
+    toString: function() {
+        return '(x: ' + this.x + ', y: ' + this.y + ')';
+    }
+};
+function Edge(p0, p1) {
+    this.nodes = [p0, p1];
+}
 
 //-----------------------------
 // CLASS
@@ -439,7 +496,7 @@ var Delaunay = (function() {
  * 
  * @param {Number} x
  * @param {Number} y
- * @super Delaunay.Node
+ * @super Node
  */
 var Particle = (function(Node) {
     
@@ -457,7 +514,7 @@ var Particle = (function(Node) {
 
     return Particle;
     
-})(Delaunay.Node);
+})(Node);
 
 
 // Init
