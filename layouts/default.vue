@@ -14,8 +14,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
-  background: linear-gradient(#fffff4,#dce4cd);
-  background-attachment: fixed;
+  background: url('~assets/bg.png') center/110px 191.5px fixed, linear-gradient(#fffff4,#dce4cd) fixed;
 }
 
 *, *:before, *:after {
