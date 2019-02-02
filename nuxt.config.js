@@ -30,6 +30,12 @@ module.exports = {
     '~/plugins/scroll-directive',
     '~/plugins/smooth-scroll'
   ],
+  modules: [
+    '@nuxtjs/style-resources'
+  ],
+  styleResources: {
+    sass: ['~/assets/breakpoints.scss']
+  },
   /*
   ** Customize the progress bar color
   */

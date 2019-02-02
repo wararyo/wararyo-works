@@ -1,14 +1,14 @@
 <!-- 作品のカテゴリを横に並べる -->
 <template>
-	<div class="navigation" id="navigation">
-		<ul>
+	<div class="navigation">
+		<canvas :class="{'hidden':$route.params.work !== void 0}" id="navigation-canvas"></canvas>
+		<ul  id="navigation">
 			<li v-for="category in categories"
 				:key="category.fields.slug"
 				@click="scroll()">
 				<nuxt-link :to="makeLink(category.fields.slug)">{{category.fields.name}}</nuxt-link>
 			</li>
 		</ul>
-		<canvas :class="{'hidden':$route.params.work !== void 0}" id="navigation-canvas"></canvas>
 	</div>
 </template>
 
@@ -43,8 +43,7 @@ export default {
 <style lang="scss">
 .navigation {
 	position: relative;
-	height: 200px;
-	margin-bottom: -72px;
+	margin-bottom: 94px;
 
 	ul {
 		display: flex;
@@ -75,13 +74,26 @@ export default {
 		top: 0;
 		left: 0;
 		width: 100%;
-		height: 100%;
+		height: 200px;
 		transition: all 1s ease-in-out 1s;
 
 		&.hidden {
 			opacity: 0;
 			visibility: hidden;
 			//display: none;
+		}
+	}
+}
+@include mq(sp){
+	.navigation {
+		pointer-events: none;
+		margin-top: -80px;
+		margin-bottom: 0;
+		canvas {
+			position: relative;
+		}
+		ul {
+			pointer-events: auto;
 		}
 	}
 }

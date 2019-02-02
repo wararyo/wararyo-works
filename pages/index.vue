@@ -57,13 +57,13 @@ export default {
       handler: function (val,old) {
         if(old !== void 0) if(old.sys.id == val.sys.id) return;
         this.posts = [];
-        this.$nextTick(() => { this.$nuxt.$loading.start(); });
+        //this.$nextTick(() => { this.$nuxt.$loading.start(); });
         client.getEntries({
           'content_type':'work',
           'fields.categories.sys.id[in]': val.sys.id
         }).then((entries => {
           this.posts = entries.items;
-          this.$nuxt.$loading.finish();
+          //this.$nuxt.$loading.finish();
         })).catch(console.error);
       },
       immediate: true

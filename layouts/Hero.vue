@@ -5,8 +5,8 @@
         wararyo's work
       </h1>
       <h2 class="hero-catch">
-        &emsp;見て、聴いて、触って。<br>
-        &emsp;気持ちいいものを作るためなら、手段を選びません。
+        <span class="is-punctuation">見て、聴いて、触って。</span><br>
+        <span>気持ちいいものを</span><span class="is-punctuation">作るためなら、</span><span class="is-punctuation">手段を選びません。</span>
       </h2>
       <div class="hero-description">
         <p>
@@ -69,18 +69,21 @@ export default {
 }
 
 .hero-title {
+  padding: 4px 24px 8px;
   position: absolute;
   top: 48px;
   left: 50%;
   transform: translateX(-50%);
   display: block;
+  color: #FFF;
+  background-color: #35495e;
   font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
   font-weight: lighter;
   font-size: 2em;
   letter-spacing: 1px;
 }
 .hero-catch {
-  padding: 96px 16px 16px;
+  padding: 96px 0 16px 16px;
   font-size: 2.7em;
 }
 .hero-description {
@@ -111,6 +114,41 @@ export default {
 .hero-button:hover {
   color: #fff;
   background-color: #3b8070;
+}
+
+@include mq(sp){
+  .hero {
+    padding: 8px;
+  }
+  .hero-title {
+    font-size: 1.6em;
+    width: 100%;
+    display: block;
+    line-height: 56px;
+    color: #FFF;
+    background-color: #35495e;
+    top: 0;
+    left: 0;
+    transform: none;
+  }
+  .hero-catch {
+    font-size: 1.6em;
+    padding: 86px 4px 24px;
+    span {
+      display: inline-block;
+      margin-right: -8px;
+      &.is-punctuation {
+        padding-left: 0.6em;
+      }
+    }
+  }
+  .hero-description {
+    padding-bottom: 0;
+    font-size: 0.9em;
+  }
+  .hero-button {
+    background-color: rgba(255,255,255,.6);
+  }
 }
 
 </style>

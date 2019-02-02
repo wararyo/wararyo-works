@@ -59,6 +59,8 @@ export default {
 	margin: 16px auto;
 	display: flex;
 	justify-content: center;
+	align-items: flex-start;
+	align-content: flex-start;
 	flex-wrap: wrap;
 }
 .contents-item {

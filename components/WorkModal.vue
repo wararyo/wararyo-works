@@ -147,6 +147,9 @@ export default {
 		.modal-content {
 			transition: all .4s cubic-bezier(0.04, 0.83, 0.29, 1);
 		}
+		&.modal-wrapper:before {
+			transition: opacity .3s;
+		}
 	}
 	&-enter {
 		.modal-mask {
@@ -165,6 +168,34 @@ export default {
 			opacity: 0;
 			transform: scale(1.1);
 		}
+		&.modal-wrapper:before {
+			opacity: 0;
+		}
+	}
+}
+@include mq(sp){
+	.modal-content {
+		width: 100%;
+		max-height: calc(100vh - 56px);
+		margin-top: 56px;
+		padding: 16px;
+		border-radius: 0;
+		
+		.eyecatch-embed iframe {
+			height: 240px;
+		}
+	}
+	.modal-wrapper:before {
+		content: "";
+		display: block;
+		position: absolute;
+		z-index: 1;
+		pointer-events: none;
+		top: 0;
+		left: 0;
+		width: 56px;
+		height: 56px;
+		background: url('~assets/back-arrow.svg') center;
 	}
 }
 </style>
