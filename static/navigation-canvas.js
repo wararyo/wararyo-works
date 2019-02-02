@@ -27,6 +27,8 @@ var frame = 0;
 
 var canvasIsPlaying = true;
 
+var mousePos = {x:0, y:0};
+
 /**
  * requestAnimationFrame
  */
@@ -51,17 +53,12 @@ function init() {
     canvas.height = 200;
     canvas.width = window.innerWidth;
 
+    document.addEventListener('mousemove',mouesMoved);
+
     context = canvas.getContext('2d');
     context.lineWidth = 0.6;
     context.strokeStyle = LINE_COLOR;
     context.lineCap = context.lineJoin = 'round';
-
-    console.log(canvas.width);
-    console.log(canvas.height);
-    
-    // for (var i = 0; i < PARTICLE_NUM; i++) {
-    //     addParticle(Math.random() * (canvas.width + 40) - 20, Math.random() * (canvas.height - 80) + 40);
-    // }
 
     triangles = [];
 
@@ -69,20 +66,30 @@ function init() {
 
     for(var i = 0; i < PARTICLE_ROW; i++) {
         for(var j = 0; j < particleColumn; j++){
-            let x = PARTICLE_START_X + (PARTICLE_INTERVAL * (j+(i%2==0?0:0.5))) + (Math.random() - 0.5)*16;
-            let y = PARTICLE_START_Y + (PARTICLE_INTERVAL * 0.2 * i) + (i*i*6) + (Math.random() - 0.5)*4*i;
+            let x = PARTICLE_START_X + (PARTICLE_INTERVAL * (j+(i%2==0?0:0.5))) + (Math.random() - 0.5)*12;
+            let y = PARTICLE_START_Y + (PARTICLE_INTERVAL * 0.2 * i) + (i*i*6) + (Math.random() - 0.5)*2*i;
             addParticle(x, y, i+3);
             if(i != 0 && j != 0) {
-                if(!(i%2==0 && j==1)) {
+                if(i%2==0) {
+                    triangles.push(new Triangle(
+                        particles[particleColumn*i+j-1],
+                        particles[particleColumn*(i-1)+j-1],
+                        particles[particleColumn*i+j])); //v形
+                    triangles.push(new Triangle(
+                        particles[particleColumn*(i-1)+j-1],
+                        particles[particleColumn*i+j],
+                        particles[particleColumn*(i-1)+j])); //∧形
+                }
+                else {
                     triangles.push(new Triangle(
                         particles[particleColumn*(i-1)+j-1],
                         particles[particleColumn*i+j-1],
                         particles[particleColumn*(i-1)+j])); //v形
+                    triangles.push(new Triangle(
+                        particles[particleColumn*i+j-1],
+                        particles[particleColumn*(i-1)+j],
+                        particles[particleColumn*i+j])); //∧形
                 }
-                triangles.push(new Triangle(
-                    particles[particleColumn*i+j-1],
-                    particles[particleColumn*(i-1)+j],
-                    particles[particleColumn*i+j])); //∧形
             }
         }
     }
@@ -110,6 +117,14 @@ function resize(e) {
     screenHeight = canvas.height = window.innerHeight;
 }
 
+function mouesMoved(e) {
+    var rect = canvas.getBoundingClientRect();
+    mousePos = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+    };
+}
+
 /**
  * Animation loop
  */
@@ -128,14 +143,24 @@ function loop() {
     
     var i, len, p;
     var dx, dy, distSq, ax, ay;
+
+    norm = function(x,s,u) { return (1 / Math.sqrt(2 * Math.PI * s * s)) * Math.exp((-1) * (x - u) * (x - u) / (2 * s * s)); };
     
-    // 分割点の処理
+    // 点を波打たせる
     for (len = particles.length, i = 0; i < len; i++) {
         p = particles[i];
-        
-        p.vy = (Math.sin(frame*0.001*TWO_PI+p.x*0.01) * 4
+        vx = 0;
+        vy = (Math.sin(frame*0.001*TWO_PI+p.x*0.01) * 4
          + Math.sin(-frame*0.001*TWO_PI+p.x*0.02) * 2)
-          * p.z
+          * p.z;
+        let dist = Math.hypot(mousePos.x-p.x,mousePos.y-p.y);
+        let radius = 100.0;
+        if(dist < radius) {
+            vx -= (p.x-mousePos.x)*(Math.pow(1-dist/radius,2));
+            vy -= (p.y-mousePos.y)*(Math.pow(1-dist/radius,2));
+        }
+        p.vx = (p.vx*0.9 + vx*0.1);
+        p.vy = (p.vy*0.9 + vy*0.1);
     }
     
     // 三角形分割して三角形を取得
@@ -163,10 +188,6 @@ function loop() {
             ct[id] = FILL_COLORS[colorIndex];
             colorIndex = (colorIndex + 1) % cl;
         }
-        if (!pt[id]) {
-            pt[id] = patterns[patternIndex];
-            patternIndex = (patternIndex + 1) % pl;
-        }
         
         ctx.save();
         ctx.beginPath();
@@ -176,13 +197,8 @@ function loop() {
         ctx.closePath();
         // 描画色で塗る
         ctx.fillStyle = ct[id];
-        ctx.globalAlpha = p0.z*0.25 - 0.6;
+        ctx.globalAlpha = Math.min(p0.z,p1.z)*0.25 - 0.6;//フォグ
         ctx.fill();
-        // パターンで塗る, 三角形の位置と傾きに応じて変形
-        // ctx.translate(p0.x, p0.y);
-        // ctx.rotate(Math.atan2(p0.y - p1.y, p0.x - p1.x));
-        // ctx.fillStyle = pt[id];
-        // ctx.fill();
         // 線を引く
         ctx.stroke();
         ctx.restore();
@@ -193,19 +209,9 @@ function loop() {
         ctx.moveTo(p.x + p.vx + 2, p.y + p.vy);
         ctx.arc(p.x + p.vx, p.y + p.vy, 2, 0, TWO_PI, false);
         ctx.fillStyle = LINE_COLOR;
-        ctx.globalAlpha = p.z*0.2 - 0.5;
+        ctx.globalAlpha = p.z*0.2 - 0.5;//フォグ
         ctx.fill();
     }
-
-    // Draw Fog
-    // context.beginPath();
-    // context.rect(0,0,w,h);
-    // var grdLinear = context.createLinearGradient(0, 0, 0, h);
-    // grdLinear.addColorStop(0, "rgba(247, 247, 247, 0.5)");
-    // grdLinear.addColorStop(1, 'rgba(247, 247, 247, 0)');
-    // context.fillStyle = grdLinear;
-    // context.fill();  
-    // context.closePath();
     
     if(canvasIsPlaying) requestAnimationFrame(loop);
 }

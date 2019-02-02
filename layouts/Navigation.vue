@@ -32,6 +32,7 @@ export default {
 .navigation {
 	position: relative;
 	height: 200px;
+	margin-bottom: -72px;
 
 	ul {
 		display: flex;
@@ -41,7 +42,7 @@ export default {
 	}
 
 	a {
-		margin: 16px;
+		margin: 0 16px;
 		display:block;
 		line-height: 48px;
 		padding: 0 48px;
