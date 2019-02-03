@@ -55,14 +55,16 @@ export default {
 	}
 
 	a {
-		margin: 0 16px;
+		margin: 0 0.5px;
 		display:block;
-		line-height: 48px;
-		padding: 0 48px;
+		position: relative;
+		line-height: 36px;
+		padding: 0 48px 1px;
 		color: $blue-gray;
 		text-decoration: none;
 		background-color: rgba(255,255,255,.7);
-		border: 1px solid $blue-gray;
+		//border-image-width: 48px;
+		//border-width: 24px;
 		transition: all .2s;
 		&.emphasized {
 			font-weight: bolder;
@@ -74,6 +76,17 @@ export default {
 		&.nuxt-link-exact-active {
 			background-color: $blue-gray;
 			color: $white;
+		}
+		&:before {
+			content: "";
+			display: block;
+			position: absolute;
+			top: -8px;
+			bottom: -8px;
+			left: -8px;
+			right: -8px;
+			border: 12px solid;
+			border-image: url('~assets/nav-border.png') 24;
 		}
 	}
 	canvas {
@@ -92,6 +105,13 @@ export default {
 		}
 	}
 }
+@include mq(tl){
+  .navigation {
+  	a {
+		padding: 0 24px 1px;
+  	}
+  }
+}
 @include mq(sp){
 	.navigation {
 		pointer-events: none;
@@ -101,7 +121,7 @@ export default {
 			position: relative;
 		}
 		ul {
-			pointer-events: auto;
+			display: none;
 		}
 	}
 }

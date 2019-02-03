@@ -1,0 +1,13 @@
+<svg id="レイヤー_1" data-name="レイヤー 1" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <title>hamburger</title>
+  <rect class="cls-1" x="14" y="14" width="20" height="2"/>
+  <rect class="cls-1" x="14" y="32" width="20" height="2"/>
+  <rect class="cls-1" x="14" y="23" width="20" height="2"/>
+</svg>

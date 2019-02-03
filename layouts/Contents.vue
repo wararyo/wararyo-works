@@ -100,4 +100,10 @@ export default {
 		transition: all .5s cubic-bezier(0.04, 0.83, 0.29, 1);
 	}
 }
+
+@include mq(sp){
+	.contents {
+		min-height: calc(100vh - 140px);
+	}
+}
 </style>

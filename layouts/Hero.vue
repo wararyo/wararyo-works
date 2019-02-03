@@ -43,14 +43,24 @@
 export default {
   methods: {
     scroll () {
-      console.log("hoge");
-      this.$SmoothScroll(
-        document.querySelector('#navigation'),
-        800,
-        null,
-        null,
-        'y'
-      );
+      if(document.querySelector('#navigation').getBoundingClientRect().height == 0) {
+        this.$SmoothScroll(
+          document.querySelector('#navigation-mobile'),
+          800,
+          null,
+          null,
+          'y'
+        );
+      }
+      else {
+        this.$SmoothScroll(
+          document.querySelector('#navigation'),
+          800,
+          null,
+          null,
+          'y'
+        );
+      }
     }
   }
 }
@@ -88,6 +98,13 @@ export default {
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
   font-style: normal;
+  span {
+    display: inline-block;
+    margin-right: -0.5em;
+    &.is-punctuation {
+      padding-left: 0.6em;
+    }
+  }
 }
 .hero-description {
   font-weight: 300;
@@ -106,15 +123,25 @@ export default {
 }
 
 .hero-button {
+  position: relative;
   margin: 16px;
   padding: 10px 30px;
   display: inline-block;
-  border-radius: 4px;
-  border: 1px solid $blue-gray;
   color: $blue-gray;
   font-family: 'Noto Sans JP';
   text-decoration: none;
   transition: all .1s;
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -8px;
+    bottom: -8px;
+    left: -8px;
+    right: -8px;
+    border: 12px solid;
+    border-image: url('~assets/nav-border.png') 24;
+  }
 }
 .hero-button:hover {
   color: $white;

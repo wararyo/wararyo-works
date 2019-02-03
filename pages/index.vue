@@ -7,7 +7,10 @@
       <navigation :categories="categories" />
       <!-- <category-description /> -->
       <!-- <nuxt-child /> -->
-      <contents :posts="posts" />
+      <div class="contents-container" id="navigation-mobile">
+        <navigation-mobile :categories="categories" :categoryObject="categoryObject" />
+        <contents :posts="posts" />
+      </div>
       <footer>
         <p>&copy; wararyo</p>
       </footer>
@@ -18,6 +21,7 @@
 <script>
 import Hero from '~/layouts/Hero.vue'
 import Navigation from '~/layouts/Navigation.vue'
+import NavigationMobile from '~/layouts/NavigationMobile.vue'
 import CategoryDescription from '~/layouts/CategoryDescription.vue'
 import Contents from '~/layouts/Contents.vue'
 import WorkModal from '~/components/WorkModal.vue'
@@ -29,6 +33,7 @@ export default {
   components: {
     Hero,
     Navigation,
+    NavigationMobile,
     CategoryDescription,
     Contents,
     WorkModal
@@ -108,9 +113,12 @@ var client = contentful.createClient({
 
 </script>
 
-<style>
+<style lang="scss">
 .container {
   text-align: center;
+}
+.contents-container {
+  position: relative;
 }
 footer {
   margin: 24px;
@@ -121,6 +129,12 @@ footer {
 }
 .blurred {
   filter: blur(2px);
+}
+
+@include mq(sp){
+  .blurred {
+    filter: none;
+  }
 }
 </style>
 
