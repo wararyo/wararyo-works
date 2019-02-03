@@ -2,11 +2,13 @@
 <template>
 	<div class="navigation">
 		<canvas :class="{'hidden':$route.params.work !== void 0}" id="navigation-canvas"></canvas>
-		<ul  id="navigation">
+		<ul id="navigation">
 			<li v-for="category in categories"
 				:key="category.fields.slug"
-				@click="scroll()">
-				<nuxt-link :to="makeLink(category.fields.slug)">{{category.fields.name}}</nuxt-link>
+				@click="scroll()" >
+				<nuxt-link 
+				:to="makeLink(category.fields.slug)"
+				:class="{emphasized: category.fields.emphasized }" >{{category.fields.name}}</nuxt-link>
 			</li>
 		</ul>
 	</div>
@@ -57,15 +59,18 @@ export default {
 		display:block;
 		line-height: 48px;
 		padding: 0 48px;
-		color: #555;
+		color: $blue-gray;
 		text-decoration: none;
 		background-color: rgba(255,255,255,.7);
-		border: 1px solid #596347;
+		border: 1px solid $blue-gray;
 		transition: all .2s;
-
+		&.emphasized {
+			font-weight: bolder;
+			font-style: italic;
+		}
 		&.nuxt-link-exact-active {
-			background-color: #596347;
-			color: #FFFFFF;
+			background-color: $blue-gray;
+			color: $white;
 		}
 	}
 	canvas {

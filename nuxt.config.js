@@ -16,7 +16,7 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
     script: [
-      { src: '/navigation-canvas.js' }
+      { src: '/navigation-canvas.js' },
     ]
   },
   env: {
@@ -34,7 +34,10 @@ module.exports = {
     '@nuxtjs/style-resources'
   ],
   styleResources: {
-    sass: ['~/assets/breakpoints.scss']
+    sass: [
+      '~/assets/breakpoints.scss',
+      '~/assets/variables.scss'
+    ]
   },
   /*
   ** Customize the progress bar color

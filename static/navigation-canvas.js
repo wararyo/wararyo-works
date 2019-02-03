@@ -66,7 +66,7 @@ function resize(e) {
     particles = [];
     triangles = [];
 
-    var particleColumn = Math.floor(Math.min((canvas.width + 100) / PARTICLE_INTERVAL,PARTICLE_MAX_COLUMN));
+    var particleColumn = Math.floor(Math.min((canvas.width + 128) / PARTICLE_INTERVAL,PARTICLE_MAX_COLUMN));
 
     for(var i = 0; i < PARTICLE_ROW; i++) {
         for(var j = 0; j < particleColumn; j++){

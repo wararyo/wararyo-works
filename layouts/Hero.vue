@@ -58,7 +58,7 @@ export default {
 
 <style lang="scss">
 .hero {
-  min-height: calc(100vh - 200px);
+  min-height: calc(84vh - 48px);
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -77,17 +77,21 @@ export default {
   display: block;
   color: #FFF;
   background-color: #35495e;
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
+  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: lighter;
   font-size: 2em;
   letter-spacing: 1px;
 }
 .hero-catch {
-  padding: 96px 0 16px 16px;
+  padding: 96px 0 32px 16px;
   font-size: 2.7em;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }
 .hero-description {
   font-weight: 300;
+  font-family: 'Noto Sans JP', sans-serif;
   font-size: 1em;
   word-spacing: 5px;
   padding-bottom: 15px;
@@ -106,18 +110,19 @@ export default {
   padding: 10px 30px;
   display: inline-block;
   border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
+  border: 1px solid $blue-gray;
+  color: $blue-gray;
   text-decoration: none;
   transition: all .1s;
 }
 .hero-button:hover {
-  color: #fff;
-  background-color: #3b8070;
+  color: $white;
+  background-color: $blue-gray;
 }
 
 @include mq(sp){
   .hero {
+    min-height: 90vh;
     padding: 8px;
   }
   .hero-title {
@@ -125,15 +130,13 @@ export default {
     width: 100%;
     display: block;
     line-height: 56px;
-    color: #FFF;
-    background-color: #35495e;
     top: 0;
     left: 0;
     transform: none;
   }
   .hero-catch {
     font-size: 1.6em;
-    padding: 86px 4px 24px;
+    padding: 80px 4px 32px;
     span {
       display: inline-block;
       margin-right: -8px;
