@@ -112,6 +112,7 @@ export default {
   border-radius: 4px;
   border: 1px solid $blue-gray;
   color: $blue-gray;
+  font-family: 'Noto Sans JP';
   text-decoration: none;
   transition: all .1s;
 }

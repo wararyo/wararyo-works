@@ -60,7 +60,8 @@ export default {
         //this.$nextTick(() => { this.$nuxt.$loading.start(); });
         client.getEntries({
           'content_type':'work',
-          'fields.categories.sys.id[in]': val.sys.id
+          'fields.categories.sys.id[in]': val.sys.id,
+          'order':'-fields.createdAt'
         }).then((entries => {
           this.posts = entries.items;
           //this.$nuxt.$loading.finish();

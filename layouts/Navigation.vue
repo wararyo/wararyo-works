@@ -68,6 +68,9 @@ export default {
 			font-weight: bolder;
 			font-style: italic;
 		}
+		&:not(.emphasized) {
+			font-family: 'Noto Sans JP';
+		}
 		&.nuxt-link-exact-active {
 			background-color: $blue-gray;
 			color: $white;

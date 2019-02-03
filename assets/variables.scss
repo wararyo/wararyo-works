@@ -5,18 +5,11 @@ $white: #FFF;
 
 $blue-gray: #354d5e;
 $green-gray: #475a45;
+$green-gray-light: #408c28;
 
 /*
 * Noto Sans JP (japanese) http://www.google.com/fonts/earlyaccess
 */
-@font-face {
-  font-family: 'Noto Sans JP';
-  font-style: normal;
-  font-weight: 300;
-  src: url("https://fonts.gstatic.com/ea/notosansjp/v5/NotoSansJP-Light.woff2") format('woff2'),
-       url("https://fonts.gstatic.com/ea/notosansjp/v5/NotoSansJP-Light.woff") format('woff'),
-       url("https://fonts.gstatic.com/ea/notosansjp/v5/NotoSansJP-Light.otf") format('opentype');
-}
 @font-face {
    font-family: 'Noto Sans JP';
    font-style: normal;
