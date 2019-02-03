@@ -13,6 +13,7 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "@nuxtjs/google-analytics": "^2.0.2",
     "babel-runtime": "^6.26.0",
     "contentful": "^7.1.0",
     "nuxt": "^2.0.0",

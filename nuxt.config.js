@@ -10,7 +10,10 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'wararyoのポートフォリオサイトです。' }
+      { hid: 'og:site_name', property: 'og:site_name', content: 'wararyo\'s work' },
+      { hid: 'og:type', property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:site', content: '@wararyo' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -31,7 +34,8 @@ module.exports = {
     '~/plugins/smooth-scroll'
   ],
   modules: [
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    ['@nuxtjs/google-analytics',{id:'UA-133749103-1'}]
   ],
   styleResources: {
     sass: [
