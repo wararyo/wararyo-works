@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt --spa",
-    "build": "nuxt build --spa",
+    "build": "nuxt build --spa && node ogp-replace.js dist/index.html '<meta data-n-head=\"true\" content=\"replace\">' ogp.php dist/index.php",
     "start": "nuxt start --spa",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",

@@ -14,6 +14,7 @@ module.exports = {
       { hid: 'og:type', property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:site', content: '@wararyo' },
+      { content: 'replace' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
