@@ -1,6 +1,9 @@
 <template>
 	<nuxt-link v-if="post !== void 0" :to="makeLink($route.params.category,post.fields.slug)" class="work-card">
-		<img :src="post.fields.eyecatch.fields.file.url" alt="">
+		<img :src="post.fields.eyecatch.fields.file.url+'?w=320'"
+			:srcset="post.fields.eyecatch.fields.file.url+'?w=320 1x, '+
+			post.fields.eyecatch.fields.file.url+'?w=640 2x'"
+			alt="">
 		<h3>{{post.fields.title}}</h3>
 		<div class="work-card-detail">
 			<tag-view :tags="post.fields.tags" />
