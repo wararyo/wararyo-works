@@ -76,7 +76,7 @@ export default {
 		height: 56px;
 		background-image: url('~assets/hamburger.svg');
 		background-position: center;
-		opacity: 0.6;
+		opacity: 0.5;
 		transition: opacity .5s;
 	}
 

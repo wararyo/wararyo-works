@@ -56,7 +56,7 @@ export default {
 <style lang="scss">
 .modal-wrapper {
 	position: fixed;
-	z-index: 10;
+	z-index: 20;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -143,6 +143,7 @@ export default {
 		}
 		iframe {
 			display: block;
+			max-width: 100%;
 			margin: 16px auto;
 			box-shadow: 0px 2px 4px rgba($black,.2);
 		}

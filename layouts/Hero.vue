@@ -68,7 +68,7 @@ export default {
 
 <style lang="scss">
 .hero {
-  min-height: calc(84vh - 48px);
+  min-height: calc(84vh - 72px);
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -93,7 +93,7 @@ export default {
   letter-spacing: 1px;
 }
 .hero-catch {
-  padding: 100px 0 28px 16px;
+  padding: 120px 0 28px 16px;
   font-size: 2.7em;
   font-weight: 700;
   font-style: normal;
@@ -108,14 +108,14 @@ export default {
     > span {
       display: block;
       opacity: 0;
-      animation: movein 1s cubic-bezier(0.04, 0.83, 0.29, 1) forwards;
+      animation: heromovein 1s cubic-bezier(0.04, 0.83, 0.29, 1) forwards;
     }
     &:nth-of-type(1) > span {animation-delay: 0s;}
     &:nth-of-type(2) > span {animation-delay: 0.1s;}
     &:nth-of-type(3) > span {animation-delay: 0.2s;}
-    &:nth-of-type(4) > span {animation-delay: 0.6s;}
-    &:nth-of-type(5) > span {animation-delay: 0.7s;}
-    &:nth-of-type(6) > span {animation-delay: 1.0s;}
+    &:nth-of-type(4) > span {animation-delay: 0.9s;}
+    &:nth-of-type(5) > span {animation-delay: 1.0s;}
+    &:nth-of-type(6) > span {animation-delay: 1.2s;}
   }
 }
 .hero-description {
@@ -123,6 +123,8 @@ export default {
   font-size: 1em;
   word-spacing: 5px;
   padding-bottom: 15px;
+  opacity: 0;
+  animation: herofadein 1s cubic-bezier(0.04, 0.83, 0.29, 1) 1.6s forwards;
 
   p {
     margin-bottom: 16px;
@@ -141,6 +143,8 @@ export default {
   color: $blue-gray;
   text-decoration: none;
   transition: all .1s;
+  opacity: 0;
+  animation: herofadein 1s cubic-bezier(0.04, 0.83, 0.29, 1) 2.4s forwards;
   &:before {
     content: "";
     display: block;
@@ -158,14 +162,19 @@ export default {
   background-color: $blue-gray;
 }
 
-@keyframes movein {
+@keyframes heromovein {
   0% {transform: translateY(100%); opacity: 0;}
+  100% {transform: translateY(0);opacity: 1;}
+}
+
+@keyframes herofadein {
+  0% {transform: translateY(4px); opacity: 0;}
   100% {transform: translateY(0);opacity: 1;}
 }
 
 @include mq(sp){
   .hero {
-    min-height: 90vh;
+    min-height: calc(90vh - 12px);
     padding: 8px;
   }
   .hero-title {

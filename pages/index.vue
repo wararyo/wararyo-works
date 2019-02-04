@@ -91,6 +91,11 @@ export default {
       let c = this.categories.filter(function (item) {
         return item.fields.slug == category;
       });
+      if(c.length == 0) {
+        c = this.categories.filter(function (item) {
+          return item.fields.slug == process.env.defaultCategorySlug;
+        });
+      }
       return c[0];
     },
     postObject () {

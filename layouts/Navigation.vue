@@ -45,6 +45,7 @@ export default {
 <style lang="scss">
 .navigation {
 	position: relative;
+	margin-top: 24px;
 	margin-bottom: 94px;
 
 	ul {
