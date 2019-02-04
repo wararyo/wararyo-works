@@ -100,7 +100,6 @@ export default {
 	box-shadow: 0 4px 8px rgba(0,0,0,.2);
 
 	h1 {
-		font-family: 'Noto Sans JP';
 		font-size: 1.8em;
 		margin: 16px 0 0;
 	}
@@ -130,7 +129,6 @@ export default {
 		margin-top: 16px;
 		font-size: 0.9em;
 		h3,h4,h5,h6 {
-			font-family: 'Noto Sans JP';
 		}
 		p {
 			margin: 12px 0;

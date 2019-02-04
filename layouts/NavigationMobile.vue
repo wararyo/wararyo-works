@@ -52,6 +52,7 @@ export default {
 	height: 56px;
 	overflow: hidden;
 	position: sticky;
+	z-index: 15;
 	top: 0;
 	color: $white;
 	background-color: $blue-gray;
@@ -102,7 +103,7 @@ export default {
 			font-style: italic;
 		}
 		&:not(.emphasized) {
-			font-family: 'Noto Sans JP';
+			//font-family: 'Noto Sans JP';
 		}
 	}
 }

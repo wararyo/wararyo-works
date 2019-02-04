@@ -5,8 +5,8 @@
         wararyo's work
       </h1>
       <h2 class="hero-catch">
-        <span class="is-punctuation">見て、聴いて、触って。</span><br>
-        <span>気持ちいいものを</span><span class="is-punctuation">作るためなら、</span><span class="is-punctuation">手段を選びません。</span>
+        <span class="is-punctuation"><span>見て、</span></span><span class="is-punctuation"><span>聴いて、</span></span><span class="is-punctuation"><span>触って。</span></span><br>
+        <span><span>気持ちいいものを</span></span><span class="is-punctuation"><span>作るためなら、</span></span><span class="is-punctuation"><span>手段を選びません。</span></span>
       </h2>
       <div class="hero-description">
         <p>
@@ -93,22 +93,33 @@ export default {
   letter-spacing: 1px;
 }
 .hero-catch {
-  padding: 96px 0 32px 16px;
+  padding: 100px 0 28px 16px;
   font-size: 2.7em;
-  font-family: 'Noto Sans JP', sans-serif;
   font-weight: 700;
   font-style: normal;
-  span {
+  > span {
     display: inline-block;
     margin-right: -0.5em;
+    overflow: hidden;
+    line-height: 1em;
     &.is-punctuation {
       padding-left: 0.6em;
     }
+    > span {
+      display: block;
+      opacity: 0;
+      animation: movein 1s cubic-bezier(0.04, 0.83, 0.29, 1) forwards;
+    }
+    &:nth-of-type(1) > span {animation-delay: 0s;}
+    &:nth-of-type(2) > span {animation-delay: 0.1s;}
+    &:nth-of-type(3) > span {animation-delay: 0.2s;}
+    &:nth-of-type(4) > span {animation-delay: 0.6s;}
+    &:nth-of-type(5) > span {animation-delay: 0.7s;}
+    &:nth-of-type(6) > span {animation-delay: 1.0s;}
   }
 }
 .hero-description {
   font-weight: 300;
-  font-family: 'Noto Sans JP', sans-serif;
   font-size: 1em;
   word-spacing: 5px;
   padding-bottom: 15px;
@@ -128,7 +139,6 @@ export default {
   padding: 10px 30px;
   display: inline-block;
   color: $blue-gray;
-  font-family: 'Noto Sans JP';
   text-decoration: none;
   transition: all .1s;
   &:before {
@@ -148,6 +158,11 @@ export default {
   background-color: $blue-gray;
 }
 
+@keyframes movein {
+  0% {transform: translateY(100%); opacity: 0;}
+  100% {transform: translateY(0);opacity: 1;}
+}
+
 @include mq(sp){
   .hero {
     min-height: 90vh;
@@ -158,14 +173,15 @@ export default {
     width: 100%;
     display: block;
     line-height: 56px;
+    padding: 0;
     top: 0;
     left: 0;
     transform: none;
   }
   .hero-catch {
     font-size: 1.6em;
-    padding: 80px 4px 32px;
-    span {
+    padding: calc(4vh + 64px) 4px 32px;
+    > span {
       display: inline-block;
       margin-right: -8px;
       &.is-punctuation {

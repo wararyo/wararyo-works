@@ -36,13 +36,19 @@ module.exports = {
   ],
   modules: [
     '@nuxtjs/style-resources',
-    ['@nuxtjs/google-analytics',{id:'UA-133749103-1'}]
+    ['@nuxtjs/google-analytics',{id:'UA-133749103-1'}],
+    'nuxt-webfontloader',
   ],
   styleResources: {
     sass: [
       '~/assets/breakpoints.scss',
       '~/assets/variables.scss'
     ]
+  },
+  webfontloader: {
+    google: {
+      families: ['Noto+Sans+JP:400,700']
+    }
   },
   /*
   ** Customize the progress bar color

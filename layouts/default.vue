@@ -4,9 +4,9 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
 html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Noto Sans CJK JP', 'Noto Sans JP', "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -26,5 +26,11 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-</style>
 
+@include mq(sp){
+  html {
+    //モバイル時Webフォントつかわない
+    font-family: 'Noto Sans CJK JP', "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+}
+</style>
