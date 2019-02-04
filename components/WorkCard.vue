@@ -1,8 +1,8 @@
 <template>
 	<nuxt-link v-if="post !== void 0" :to="makeLink($route.params.category,post.fields.slug)" class="work-card">
-		<img :src="post.fields.eyecatch.fields.file.url+'?w=320'"
-			:srcset="post.fields.eyecatch.fields.file.url+'?w=320 1x, '+
-			post.fields.eyecatch.fields.file.url+'?w=640 2x'"
+		<img :src="post.fields.eyecatch.fields.file.url+'?w=320&fm=jpg'"
+			:srcset="post.fields.eyecatch.fields.file.url+'?w=320&fm=jpg 1x, '+
+			post.fields.eyecatch.fields.file.url+'?w=640&fm=jpg 2x'"
 			alt="">
 		<h3>{{post.fields.title}}</h3>
 		<div class="work-card-detail">
@@ -49,6 +49,8 @@ export default {
 	img {
 		border-radius: 4px 4px 0 0;
 		width: 100%;
+		min-height: 180px;
+		background-color: #DDD;
 	}
 	h3 {
 		padding: 8px;
@@ -70,5 +72,12 @@ export default {
 	justify-content: flex-end;
 	align-items: center;
 	overflow: hidden;
+}
+@include mq(sp){
+	.work-card {
+		img {
+			min-height: 160px;
+		}
+	}
 }
 </style>
