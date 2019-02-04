@@ -13,6 +13,10 @@ var PARTICLE_INTERVAL = 36;
 var PARTICLE_ROW = 5;
 var CANVAS_HEIGHT = 200;
 
+var userAgent = window.navigator.userAgent.toLowerCase();
+var isIE = (userAgent.indexOf('msie') != -1 ||
+        userAgent.indexOf('trident') != -1);
+
 // Vars
 var canvas, context;
 var delaunay;
@@ -136,7 +140,13 @@ function loop() {
          + Math.sin(-frame*0.001*TWO_PI+p.x*0.02) * 2)
           * p.z;
         if(0 <= mousePos.y && mousePos.y <= h) {
-            let dist = Math.hypot(mousePos.x - p.x - vx,(mousePos.y - p.y - vy)*0.6);//判定円を縦長に
+            let dist = 0;
+            if(isIE) {
+                let x = mousePos.x - p.x - vx;
+                let y = (mousePos.y - p.y - vy)*0.6;
+                dist = Math.sqrt(x*x+y*y);
+            }
+            else dist = Math.hypot(mousePos.x - p.x - vx,(mousePos.y - p.y - vy)*0.6);//判定円を縦長に
             let radius = 160.0;
             if(dist < radius) {
                 vx += (mousePos.x-p.x-vx)*1.4*Math.pow((p.z-2)/6,2)*(Math.pow(1-dist/radius,2));

@@ -10,7 +10,7 @@
 		@before-enter="beforeEnter"
 		@after-enter="afterEnter"
 		@enter-cancelled="afterEnter">
-		<div class="contents-item" v-if="visible" v-for="(post,index) in posts" :key="post.fields.slug" :data-index="index">
+		<div class="contents-item" v-if="visible || $isIE" v-for="(post,index) in posts" :key="post.fields.slug" :data-index="index">
 			<work-card :post="post"/>
 		</div>
 	</transition-group>

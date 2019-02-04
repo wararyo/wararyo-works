@@ -32,7 +32,8 @@ module.exports = {
   },
   plugins: [
     '~/plugins/scroll-directive',
-    '~/plugins/smooth-scroll'
+    '~/plugins/smooth-scroll',
+    '~/plugins/user-agent'
   ],
   modules: [
     '@nuxtjs/style-resources',

@@ -36,6 +36,7 @@
         </p>
       </div>
       <span @click="scroll()"><nuxt-link to="" class="hero-button">作品を見る</nuxt-link></span>
+      <p v-if="$isIE">このサイトはInternet Explorerでの動作を保証していません。</p>
     </div>
 </template>
 
