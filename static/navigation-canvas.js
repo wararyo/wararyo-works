@@ -17,6 +17,12 @@ var userAgent = window.navigator.userAgent.toLowerCase();
 var isIE = (userAgent.indexOf('msie') != -1 ||
         userAgent.indexOf('trident') != -1);
 
+if(userAgent.indexOf('iphone') > -1 ||userAgent.indexOf('ipad') > -1 ||userAgent.indexOf('ipod')  > -1){
+    var moveEventName  = "touchmove";
+}else{
+    var moveEventName  = "mousemove";
+}
+
 // Vars
 var canvas, context;
 var delaunay;
@@ -52,9 +58,10 @@ function init() {
     canvas = document.getElementById('navigation-canvas');
 
     window.addEventListener('resize', resize, false);
+    canvas.width = 0;
     resize(null);
 
-    document.addEventListener('mousemove',mouesMoved);
+    document.addEventListener(moveEventName,mouseMoved);
 
     requestAnimationFrame(loop);
 }
@@ -64,7 +71,21 @@ function init() {
  */
 function resize(e) {
     canvas.height = CANVAS_HEIGHT;
+
+    if(canvas.width === window.innerWidth){
+        //Set Context
+        context = canvas.getContext('2d');
+        context.lineWidth = 0.6;
+        context.strokeStyle = LINE_COLOR;
+        return;
+    }
+
     canvas.width = window.innerWidth;
+
+    //Set Context
+    context = canvas.getContext('2d');
+    context.lineWidth = 0.6;
+    context.strokeStyle = LINE_COLOR;
 
     //頂点と面の配置
     particles = [];
@@ -101,19 +122,22 @@ function resize(e) {
             }
         }
     }
-
-    //Set Context
-    context = canvas.getContext('2d');
-    context.lineWidth = 0.6;
-    context.strokeStyle = LINE_COLOR;
 }
 
-function mouesMoved(e) {
+function mouseMoved(e) {
     var rect = canvas.getBoundingClientRect();
-    mousePos = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-    };
+    if(!e.clientX) { //iPhoneはeが配列になってる
+        mousePos = {
+            x: e[0].clientX - rect.left,
+            y: e[0].clientY - rect.top
+        };
+    }
+    else {
+        mousePos = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        };
+    }
 }
 
 /**
@@ -201,6 +225,11 @@ function loop() {
         ctx.globalAlpha = p.z*0.2 - 0.5;//フォグ
         ctx.fill();
     }
+
+    // /* 赤色でfillText */
+    // ctx.font = "18px 'Noto Sans CJK JP'";
+    // ctx.fillStyle = "red";
+    // ctx.fillText("MoveEventName: "+moveEventName, 10, 75);
     
     if(canvasIsPlaying) requestAnimationFrame(loop);
 }
