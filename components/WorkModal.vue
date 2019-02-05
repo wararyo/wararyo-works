@@ -119,11 +119,18 @@ export default {
 		border-radius: 2px;
 		box-shadow: 0 2px 4px rgba(0,0,0,.2);
 	}
-	.eyecatch-embed iframe {
-		width: 100%;
-		height: 420px;
-		background-color: rgba(0,0,0,.1);
-		box-shadow: 0 2px 4px rgba(0,0,0,.2);
+	.eyecatch-embed {
+		img {
+			width: 100%;
+			background-color: rgba(0,0,0,.1);
+			box-shadow: 0 2px 4px rgba(0,0,0,.2);
+		}
+		iframe {
+			width: 100%;
+			height: 420px;
+			background-color: rgba(0,0,0,.1);
+			box-shadow: 0 2px 4px rgba(0,0,0,.2);
+		}
 	}
 	.work-content {
 		margin-top: 16px;
