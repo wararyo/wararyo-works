@@ -72,7 +72,7 @@ function init() {
 function resize(e) {
     canvas.height = CANVAS_HEIGHT;
 
-    if(canvas.width === window.innerWidth){
+    if(canvas.width == window.innerWidth){
         //Set Context
         context = canvas.getContext('2d');
         context.lineWidth = 0.6;

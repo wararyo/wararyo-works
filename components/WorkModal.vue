@@ -156,6 +156,8 @@ export default {
 		}
 		ul,ol {
 			margin: 8px 0;
+			list-style-type: disc;
+			padding-left: 2em;
 		}
 	}
 }
@@ -226,6 +228,33 @@ export default {
 		width: 56px;
 		height: 56px;
 		background: url('~assets/back-arrow.svg') center;
+	}
+}
+@media screen and (max-height: 480px) {
+	.modal-content {
+		max-height: 100vh;
+		width: calc(100% - 96px);
+		padding: 16px;
+		border-radius: 0;
+
+		.eyecatch {
+			display: block;
+			width: 80%;
+			margin: 0 auto;
+		}
+		.eyecatch-embed {
+			img {
+				display: block;
+				width: 80%;
+				margin: 0 auto;
+			}
+			iframe {
+				display: block;
+				width: 80%;
+				height: 320px;
+				margin: 0 auto;
+			}
+		}
 	}
 }
 </style>
