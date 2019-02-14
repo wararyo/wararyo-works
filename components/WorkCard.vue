@@ -54,6 +54,9 @@ export default {
 	}
 	h3 {
 		padding: 8px;
+		overflow: hidden;
+	    text-overflow: ellipsis;
+	    white-space: nowrap;
 	}
 
 	.tag-view {
@@ -62,7 +65,8 @@ export default {
 		font-size: 0.8em;
 	}
 	time {
-		color: #666;
+		color: #999;
+		font-size: 0.9em;
 		text-align: right;
 	}
 }

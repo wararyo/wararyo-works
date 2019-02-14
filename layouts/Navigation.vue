@@ -49,6 +49,8 @@ export default {
 	margin-bottom: 94px;
 
 	ul {
+		padding-top: 24px;
+		margin-top: -24px;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
@@ -93,7 +95,7 @@ export default {
 	canvas {
 		position: absolute;
 		z-index: -1;
-		top: 0;
+		top: 24px;
 		left: 0;
 		width: 100%;
 		height: 200px;
@@ -120,6 +122,7 @@ export default {
 		margin-bottom: 0;
 		canvas {
 			position: relative;
+			top: 0;
 		}
 		ul {
 			display: none;
