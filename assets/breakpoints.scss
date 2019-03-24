@@ -8,7 +8,7 @@
             @content;
         }
     } @else if $breakpoint == pc-narrow {
-        @media screen and (max-width: 1279px) and (min-width: 960px) {
+        @media screen and (max-width: 1031px) and (min-width: 960px) {
             @content;
         }
     }

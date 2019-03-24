@@ -35,7 +35,7 @@ export default {
 	methods: {
 		// カードが時間差で出る
 	    beforeEnter(el) {
-			el.style.transitionDelay = 50 * parseInt(el.dataset.index, 10) + 'ms'
+			el.style.transitionDelay = (this.isBig?100:50) * parseInt(el.dataset.index, 10) + 'ms'
 	    },
 	    afterEnter(el) {
 	    	el.style.transitionDelay = ''
@@ -69,22 +69,59 @@ export default {
 	&.is-big {
 		width: 492px;
 		margin: 36px 12px;
-		&:nth-of-type(2n+3) {
-			margin-top: -256+36*2px;
-		}
+		position: relative;
+
 		&:nth-of-type(2) {
 			margin-top: 256px;
+		}
+		&:nth-of-type(2n+4) {
+			margin-top: 96px;
+		}
+		&:nth-of-type(2n+3) {
+			margin-top: -128px;
+		}
+
+		// Bigな作品の間に入る点
+		&:nth-of-type(n+2):before {
+			content: "";
+			display: block;
+			position: absolute;
+			left: 50%;
+			transform: translate(-50%,-50%);
+		}
+		&:nth-of-type(2):before {
+			background-image: url('~assets/icon-black.svg');
+			background-size: contain;
+			left: calc(50% - 24px);
+			top: -118-24px;
+			width: 48px;
+			height: 48px;
+			opacity: 0.3;
+			animation: rotate-icon 30s linear infinite;
+		}
+		&:nth-of-type(n+3):before {
+			top: -64px;
+			width: 4px;
+			height: 4px;
+			background-color: rgba($blue-gray,.3);
+			border-radius: 50%;
 		}
 	}
 }
 .contents-loading {
 	margin: 64px 0;
+	text-align: center;
 	animation: fadein 2s ease-in-out;
 }
 
 @keyframes fadein {
 	0% {opacity: 0;}
 	100% {opacity: 1;}
+}
+
+@keyframes rotate-icon {
+	0% {transform: rotate(0deg);}
+	100%{transform: rotate(359deg);}
 }
 
 .v {
@@ -112,25 +149,24 @@ export default {
 }
 
 @include mq(pc-narrow) {
-	.contents {
-		max-width: 1016px;
-	}
 	.contents-item {
 		margin: 8px;
-	}
-	&.is-big {
-		width: 492px;
-		&:nth-of-type(2n+3) {
-			margin-top: -216px;
-		}
-		&:nth-of-type(2) {
-			margin-top: 240px;
+		&.is-big {
+			margin: 36px 8px;
+			width: calc(50% - 16px);
+			&:nth-of-type(2n+3) {
+				margin-top: -216px;
+			}
+			&:nth-of-type(2) {
+				margin-top: 240px;
+			}
 		}
 	}
 }
 
 @include mq(tl){
 	.contents {
+		flex: 1;
 		justify-content: center;
 	}
 	.contents-item {
