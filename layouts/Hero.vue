@@ -5,7 +5,7 @@
         wararyo's work
       </h1>
       <h2 class="hero-catch">
-        <span class="is-punctuation"><span>見て、</span></span><span class="is-punctuation"><span>聴いて、</span></span><span class="is-punctuation"><span>触って。</span></span><br>
+        <span class="is-punctuation"><span>見て、</span></span><span class="is-punctuation"><span>聴いて、</span></span><span><span>触って</span></span><br>
         <span><span>気持ちいいものを</span></span><span class="is-punctuation"><span>作るためなら、</span></span><span class="is-punctuation"><span>手段を選びません。</span></span>
       </h2>
       <div class="hero-description">
@@ -100,11 +100,13 @@ export default {
   font-style: normal;
   > span {
     display: inline-block;
-    margin-right: -0.5em;
     overflow: hidden;
     line-height: 1em;
     &.is-punctuation {
-      padding-left: 0.6em;
+      margin-right: -0.3em !important;
+    }
+    &.is-punctuation + span {
+      margin-right: 0em;
     }
     > span {
       display: block;
@@ -193,9 +195,11 @@ export default {
     padding: calc(4vh + 64px) 4px 32px;
     > span {
       display: inline-block;
-      margin-right: -8px;
       &.is-punctuation {
-        padding-left: 0.6em;
+        margin-right: -0.4em !important;
+      }
+      &.is-punctuation + span {
+        margin-right: 0em;
       }
     }
   }
