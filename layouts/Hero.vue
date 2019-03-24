@@ -92,6 +92,7 @@ export default {
   font-weight: lighter;
   font-size: 2em;
   letter-spacing: 1px;
+  animation: fadein 0.8s cubic-bezier(0.04, 0.83, 0.29, 1) 0s forwards;
 }
 .hero-catch {
   padding: 120px 0 28px 16px;
@@ -113,12 +114,12 @@ export default {
       opacity: 0;
       animation: heromovein 1s cubic-bezier(0.04, 0.83, 0.29, 1) forwards;
     }
-    &:nth-of-type(1) > span {animation-delay: 0s;}
-    &:nth-of-type(2) > span {animation-delay: 0.1s;}
-    &:nth-of-type(3) > span {animation-delay: 0.2s;}
-    &:nth-of-type(4) > span {animation-delay: 0.9s;}
-    &:nth-of-type(5) > span {animation-delay: 1.0s;}
-    &:nth-of-type(6) > span {animation-delay: 1.2s;}
+    &:nth-of-type(1) > span {animation-delay: 0.4s;}
+    &:nth-of-type(2) > span {animation-delay: 0.8s;}
+    &:nth-of-type(3) > span {animation-delay: 1.2s;}
+    &:nth-of-type(4) > span {animation-delay: 1.4s;}
+    &:nth-of-type(5) > span {animation-delay: 1.5s;}
+    &:nth-of-type(6) > span {animation-delay: 1.8s;}
   }
 }
 .hero-description {
@@ -127,7 +128,7 @@ export default {
   word-spacing: 5px;
   padding-bottom: 15px;
   opacity: 0;
-  animation: herofadein 1s cubic-bezier(0.04, 0.83, 0.29, 1) 1.6s forwards;
+  animation: herofadein 1s cubic-bezier(0.04, 0.83, 0.29, 1) 2.6s forwards;
 
   p {
     margin-bottom: 16px;
@@ -147,7 +148,7 @@ export default {
   text-decoration: none;
   transition: all .1s;
   opacity: 0;
-  animation: herofadein 1s cubic-bezier(0.04, 0.83, 0.29, 1) 2.4s forwards;
+  animation: herofadein 1s cubic-bezier(0.04, 0.83, 0.29, 1) 2.8s forwards;
   &:before {
     content: "";
     display: block;
