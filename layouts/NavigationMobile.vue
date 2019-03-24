@@ -62,7 +62,7 @@ export default {
 	&.is-open {
 		height: 296px;
 		&:before{
-			opacity: 0;
+			transform: scale(1,-1);
 		}
 	}
 
@@ -71,13 +71,13 @@ export default {
 		display: block;
 		position: absolute;
 		top: 0;
-		left: 0;
+		right: 0;
 		width: 56px;
 		height: 56px;
-		background-image: url('~assets/hamburger.svg');
+		background-image: url('~assets/down-arrow.svg');
 		background-position: center;
 		opacity: 0.5;
-		transition: opacity .5s;
+		transition: transform .5s cubic-bezier(0.04, 0.83, 0, 1);
 	}
 
 	ul {
@@ -89,6 +89,9 @@ export default {
 		line-height: 48px;
 		&:first-child{
 			line-height: 56px;
+			a {
+				padding-right: 0.3em;
+			}
 		}
 	}
 
