@@ -60,14 +60,25 @@ export default {
   watch: {
     categoryObject: {
       handler: function (val,old) {
+
+        const sleep = (ms) => {
+            return new Promise(resolve => {
+                setTimeout(() => {
+              resolve()
+            }, ms)
+            })
+        }
+
+        //変化がないなら何もしない
         if(old !== void 0) if(old.sys.id == val.sys.id) return;
-        this.posts = [];
-        //this.$nextTick(() => { this.$nuxt.$loading.start(); });
-        client.getEntries({
-          'content_type':'work',
-          'fields.categories.sys.id[in]': val.sys.id,
-          'order':'-fields.createdAt'
-        }).then((entries => {
+        this.posts = [];    
+        this.$nextTick().then(()=>{return sleep(100)})//フェードアウトを待つ
+        .then( () => {
+          return client.getEntries({
+            'content_type':'work',
+            'fields.categories.sys.id[in]': val.sys.id,
+            'order':'-fields.createdAt'
+        })}).then((entries => {
           this.posts = entries.items;
           //this.$nuxt.$loading.finish();
         })).catch(console.error);
@@ -130,6 +141,7 @@ var client = contentful.createClient({
 }
 footer {
   margin: 24px;
+  color: rgba($blue-gray,.5);
 }
 
 .blurable {

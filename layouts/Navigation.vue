@@ -55,7 +55,7 @@ export default {
 		justify-content: center;
 		align-items: center;
 		opacity: 0;
-		animation: fadein 1s cubic-bezier(0.04, 0.83, 0.29, 1) 3.0s forwards;
+		animation: fadein 2s cubic-bezier(0.04, 0.83, 0.29, 1) 0s forwards;
 	}
 
 	a {
@@ -101,7 +101,6 @@ export default {
 		width: 100%;
 		height: 200px;
 		transition: all 1s ease-in-out 1s;
-  		animation: fadein 2s cubic-bezier(0.04, 0.83, 0.29, 1) 0s forwards;
 
 		&.hidden {
 			opacity: 0;

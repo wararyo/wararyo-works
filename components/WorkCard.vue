@@ -77,6 +77,7 @@ export default {
 		overflow: hidden;
 	    text-overflow: ellipsis;
 	    white-space: nowrap;
+	    color: #333;
 	}
 
 	.tag-view {
@@ -86,7 +87,7 @@ export default {
 	}
 	time {
 		color: #999;
-		font-size: 0.9em;
+		font-size: 0.8em;
 		text-align: right;
 	}
     &.is-big {
@@ -99,6 +100,7 @@ export default {
 .work-card-detail {
 	padding: 4px 16px 16px;
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: flex-end;
 	align-items: center;
 	align-content: center;
@@ -116,6 +118,11 @@ export default {
 	.work-card {
 		img {
 			min-height: 160px;
+		}
+		&.is-big {
+			h3 {
+				font-size: 1.2em;
+			}
 		}
 	}
 }

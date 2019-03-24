@@ -14,7 +14,7 @@ export default {
 .tag-view {
 	margin: 8px 0;
 	display: flex;
-	flex-wrap: wrap;
+	//flex-wrap: wrap;
 	justify-content: flex-start;
 
 	li {

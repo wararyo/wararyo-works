@@ -1,7 +1,6 @@
 <!-- 作品たちを並べて表示する -->
 <template>
 	<transition-group
-		v-if="posts.length > 0"
 		tag="div"
 		appear
 		mode="out-in"
@@ -10,13 +9,11 @@
 		@before-enter="beforeEnter"
 		@after-enter="afterEnter"
 		@enter-cancelled="afterEnter">
+		<p :key="'loading'" class="contents-loading" :style="{opacity: (posts.length == 0)?'1':'0'}">Loading...</p>
 		<div class="contents-item" :class="{'is-big' : isBig}" v-if="visible || $isIE" v-for="(post,index) in posts" :key="post.fields.slug" :data-index="index">
 			<work-card :post="post" :is-big="isBig"/>
 		</div>
 	</transition-group>
-	<div v-else class="contents">
-		<p class="contents-loading">Loading...</p>
-	</div>
 </template>
 
 <script>
@@ -109,14 +106,12 @@ export default {
 	}
 }
 .contents-loading {
-	margin: 64px 0;
+	position: absolute;
+	top: 96px;
+	left: 50%;
+	transform: translateX(-50%);
 	text-align: center;
-	animation: fadein 2s ease-in-out;
-}
-
-@keyframes fadein {
-	0% {opacity: 0;}
-	100% {opacity: 1;}
+	transition: opacity 1s;
 }
 
 @keyframes rotate-icon {
@@ -131,7 +126,7 @@ export default {
 	}
 
 	&-leave-active {
-
+		transition: opacity .1s ease-out;
 	}
 
 	&-enter {
@@ -143,9 +138,9 @@ export default {
 		opacity: 0;
 	}
 
-	&-move {
-		transition: all .5s cubic-bezier(0.04, 0.83, 0.29, 1);
-	}
+	// &-move {
+	// 	transition: all .5s cubic-bezier(0.04, 0.83, 0.29, 1);
+	// }
 }
 
 @include mq(pc-narrow) {
@@ -154,12 +149,6 @@ export default {
 		&.is-big {
 			margin: 36px 8px;
 			width: calc(50% - 16px);
-			&:nth-of-type(2n+3) {
-				margin-top: -216px;
-			}
-			&:nth-of-type(2) {
-				margin-top: 240px;
-			}
 		}
 	}
 }
@@ -171,11 +160,9 @@ export default {
 	}
 	.contents-item {
 		&.is-big {
-			&:nth-of-type(2n+3) {
-				margin-top: 12px;
-			}
-			&:nth-of-type(2) {
-				margin-top: 12px;
+			margin: 24px 12px !important;
+			&:before {
+				display: none !important;
 			}
 		}
 	}
@@ -189,11 +176,9 @@ export default {
 	.contents-item {
 		&.is-big {
 			width: 320px;
-			&:nth-of-type(2n+3) {
-				margin-top: 12px;
-			}
-			&:nth-of-type(2) {
-				margin-top: 12px;
+			margin: 24px 12px !important;
+			&:before {
+				display: none !important;
 			}
 		}
 	}
