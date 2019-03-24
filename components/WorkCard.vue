@@ -1,8 +1,6 @@
 <template>
 	<nuxt-link v-if="post !== void 0" :to="makeLink($route.params.category,post.fields.slug)" class="work-card" :class="{'is-big' : isBig}">
 
-		<!-- Big時に表示されるカテゴリアイコン -->
-
 		<!-- サムネ -->
 		<img v-if="isBig" :src="post.fields.eyecatch.fields.file.url+'?w=640&fm=jpg'"
 			:srcset="post.fields.eyecatch.fields.file.url+'?w=640&fm=jpg 1x, '+
@@ -15,6 +13,7 @@
 
 		<h3>{{post.fields.title}}</h3>
 		<div class="work-card-detail">
+			<category-view v-if="isBig" :categories="categoriesWithoutDefault" />
 			<tag-view :tags="post.fields.tags" />
 			<time :datetime="post.fields.createdAt" class="createdAt">{{post.fields.createdAt}}</time>
 		</div>
@@ -27,16 +26,27 @@
 
 <script>
 import TagView from '~/components/TagView.vue'
+import CategoryView from '~/components/CategoryView.vue'
+
 export default {
 	props:['post','isBig'],
 	components: {
 		TagView,
+		CategoryView
 	},
 	methods: {
 		makeLink: function(category,work) {
 			if(category === void 0)
 				category = process.env.defaultCategorySlug;
 			return '/'+category+'/'+work;
+		}
+	},
+	computed: {
+		//Pick-Upを除いたカテゴリたち
+		categoriesWithoutDefault () {
+			return this.post.fields.categories.filter(x => {
+				return x.fields.slug != process.env.defaultCategorySlug;
+			});
 		}
 	}
 }
@@ -91,6 +101,7 @@ export default {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
+	align-content: center;
 	overflow: hidden;
 }
 .work-excerpt {
