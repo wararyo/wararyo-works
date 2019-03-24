@@ -9,7 +9,7 @@
 		@before-enter="beforeEnter"
 		@after-enter="afterEnter"
 		@enter-cancelled="afterEnter">
-		<p :key="'loading'" class="contents-loading" :style="{opacity: (posts.length == 0)?'1':'0'}">Loading...</p>
+		<p :key="'loading'" class="contents-loading" :class="{'is-loading': (posts.length == 0)}">Loading...</p>
 		<div class="contents-item" :class="{'is-big' : isBig}" v-if="visible || $isIE" v-for="(post,index) in posts" :key="post.fields.slug" :data-index="index">
 			<work-card :post="post" :is-big="isBig"/>
 		</div>
@@ -111,7 +111,11 @@ export default {
 	left: 50%;
 	transform: translateX(-50%);
 	text-align: center;
-	transition: opacity 1s;
+	opacity: 0;
+	&.is-loading {
+		opacity: 1;
+		transition: opacity 2s 1s;
+	}
 }
 
 @keyframes rotate-icon {
