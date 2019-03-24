@@ -1,14 +1,24 @@
 <template>
-	<nuxt-link v-if="post !== void 0" :to="makeLink($route.params.category,post.fields.slug)" class="work-card">
-		<img :src="post.fields.eyecatch.fields.file.url+'?w=320&fm=jpg'"
+	<nuxt-link v-if="post !== void 0" :to="makeLink($route.params.category,post.fields.slug)" class="work-card" :class="{'is-big' : isBig}">
+
+		<!-- Big時に表示されるカテゴリアイコン -->
+
+		<!-- サムネ -->
+		<img v-if="isBig" :src="post.fields.eyecatch.fields.file.url+'?w=640&fm=jpg'"
+			:srcset="post.fields.eyecatch.fields.file.url+'?w=640&fm=jpg 1x, '+
+			post.fields.eyecatch.fields.file.url+'?w=1280&fm=jpg 2x'"
+			alt="サムネイル">
+		<img v-else :src="post.fields.eyecatch.fields.file.url+'?w=320&fm=jpg'"
 			:srcset="post.fields.eyecatch.fields.file.url+'?w=320&fm=jpg 1x, '+
 			post.fields.eyecatch.fields.file.url+'?w=640&fm=jpg 2x'"
-			alt="">
+			alt="サムネイル">
+
 		<h3>{{post.fields.title}}</h3>
 		<div class="work-card-detail">
 			<tag-view :tags="post.fields.tags" />
 			<time :datetime="post.fields.createdAt" class="createdAt">{{post.fields.createdAt}}</time>
 		</div>
+		<p v-if="isBig" class="work-excerpt">{{post.fields.excerpt}}</p>
 	</nuxt-link>
 	<div v-else class="word-card">
 		
@@ -18,7 +28,7 @@
 <script>
 import TagView from '~/components/TagView.vue'
 export default {
-	props:['post'],
+	props:['post','isBig'],
 	components: {
 		TagView,
 	},
@@ -69,6 +79,12 @@ export default {
 		font-size: 0.9em;
 		text-align: right;
 	}
+    &.is-big {
+    	h3 {
+			font-size: 1.4em;
+			padding: 12px 8px;
+		}
+	}
 }
 .work-card-detail {
 	padding: 4px 16px 16px;
@@ -76,6 +92,14 @@ export default {
 	justify-content: flex-end;
 	align-items: center;
 	overflow: hidden;
+}
+.work-excerpt {
+	padding: 4px 24px 16px;
+	text-align: left;
+	font-size: 0.9em;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	color: #666;
 }
 @include mq(sp){
 	.work-card {

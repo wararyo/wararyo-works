@@ -10,8 +10,8 @@
 		@before-enter="beforeEnter"
 		@after-enter="afterEnter"
 		@enter-cancelled="afterEnter">
-		<div class="contents-item" v-if="visible || $isIE" v-for="(post,index) in posts" :key="post.fields.slug" :data-index="index">
-			<work-card :post="post"/>
+		<div class="contents-item" :class="{'is-big' : isBig}" v-if="visible || $isIE" v-for="(post,index) in posts" :key="post.fields.slug" :data-index="index">
+			<work-card :post="post" :is-big="isBig"/>
 		</div>
 	</transition-group>
 	<div v-else class="contents">
@@ -26,7 +26,7 @@ export default {
 	components: {
 		WorkCard
 	},
-	props: ['posts'],
+	props: ['posts','isBig'],
 	data: function(){
 		return {
 			visible: false
@@ -58,7 +58,7 @@ export default {
 	min-height: calc(100vh - 226px);
 	margin: 16px auto;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: flex-start;
 	align-content: flex-start;
 	flex-wrap: wrap;
@@ -66,6 +66,16 @@ export default {
 .contents-item {
 	width: 320px;
 	margin: 12px;
+	&.is-big {
+		width: 492px;
+		margin: 36px 12px;
+		&:nth-of-type(2n+3) {
+			margin-top: -256+36*2px;
+		}
+		&:nth-of-type(2) {
+			margin-top: 256px;
+		}
+	}
 }
 .contents-loading {
 	margin: 64px 0;
@@ -101,9 +111,55 @@ export default {
 	}
 }
 
+@include mq(pc-narrow) {
+	.contents {
+		max-width: 1016px;
+	}
+	.contents-item {
+		margin: 8px;
+	}
+	&.is-big {
+		width: 492px;
+		&:nth-of-type(2n+3) {
+			margin-top: -216px;
+		}
+		&:nth-of-type(2) {
+			margin-top: 240px;
+		}
+	}
+}
+
+@include mq(tl){
+	.contents {
+		justify-content: center;
+	}
+	.contents-item {
+		&.is-big {
+			&:nth-of-type(2n+3) {
+				margin-top: 12px;
+			}
+			&:nth-of-type(2) {
+				margin-top: 12px;
+			}
+		}
+	}
+}
+
 @include mq(sp){
 	.contents {
+		justify-content: center;
 		min-height: calc(100vh - 140px);
+	}
+	.contents-item {
+		&.is-big {
+			width: 320px;
+			&:nth-of-type(2n+3) {
+				margin-top: 12px;
+			}
+			&:nth-of-type(2) {
+				margin-top: 12px;
+			}
+		}
 	}
 }
 </style>

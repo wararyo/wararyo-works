@@ -9,7 +9,7 @@
       <!-- <nuxt-child /> -->
       <div class="contents-container" id="navigation-mobile">
         <navigation-mobile :categories="categories" :categoryObject="categoryObject" />
-        <contents :posts="posts" />
+        <contents :posts="posts" :is-big="category == defaultCategory" />
       </div>
       <footer>
         <p>&copy; wararyo</p>
@@ -77,6 +77,9 @@ export default {
   },
 
   computed: {
+    defaultCategory () {
+      return process.env.defaultCategorySlug;
+    },
     category () {
       if(this.$route.params.category === void 0)
         return process.env.defaultCategorySlug;
