@@ -17,7 +17,8 @@ module.exports = {
       { content: 'replace' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: '/nuxt-loading.css' }
     ],
     script: [
       { src: '/navigation-canvas.js' },
